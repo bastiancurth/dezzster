@@ -7,7 +7,7 @@
 ### Das Musik-Quiz für die Hosentasche.
 ### Errate das Jahr, powered by Deezer.
 
-[Live Demo ansehen](https://DEIN-USERNAME.github.io/DEIN-REPO-NAME/)
+[Live Demo ansehen](https://bastiancurth.github.io/dezzster/)
 
 </div>
 
