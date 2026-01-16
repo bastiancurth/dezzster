@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Deezster 2.3 - Stable</title>
+    <title>Deezster 3.0 - Ultimate Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- DESIGN (Premium Glass) --- */
+        /* --- PREMIUM DESIGN --- */
         :root {
             --primary: #23a6d5;
             --secondary: #e73c7e;
             --glass-bg: rgba(255, 255, 255, 0.1);
             --glass-border: 1px solid rgba(255, 255, 255, 0.2);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-main); -webkit-tap-highlight-color: transparent; }
 
         body {
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
@@ -30,57 +31,59 @@
             background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border: var(--glass-border); border-radius: 24px; box-shadow: var(--glass-shadow);
             padding: 20px; text-align: center; position: relative; overflow: hidden;
-            display: flex; flex-direction: column; max-height: 90vh;
+            display: flex; flex-direction: column; max-height: 95vh; transition: all 0.3s;
         }
 
+        /* TYPOGRAPHY */
         h1 { font-size: 2rem; font-weight: 800; text-shadow: 0 0 10px rgba(0,0,0,0.2); margin-bottom: 5px; }
         h1 span { text-shadow: 0 0 15px var(--primary); }
         h3 { margin-bottom: 15px; opacity: 0.9; }
+        p { font-size: 0.95rem; opacity: 0.9; margin-bottom: 10px; }
 
+        /* UI ELEMENTS */
         input {
             width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.3);
             background: rgba(0,0,0,0.2); color: white; font-size: 1rem; margin-bottom: 10px; outline: none; text-align: center;
         }
         .btn {
             width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);
-            font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+            font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.1s;
             display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;
+            text-transform: uppercase; letter-spacing: 0.5px;
         }
+        .btn:active { transform: scale(0.97); }
         .btn-primary { background: rgba(255, 255, 255, 0.25); color: white; }
-        .btn-primary:active { transform: scale(0.98); background: rgba(255, 255, 255, 0.4); }
         .btn-secondary { background: rgba(0, 0, 0, 0.3); color: white; }
-        .btn-danger { background: rgba(231, 76, 60, 0.8) !important; color: white; border-color: red !important; }
-        .btn-success { background: rgba(46, 204, 113, 0.8) !important; color: white; border-color: green !important; }
+        .btn-success { background: #2ecc71; border-color: #27ae60; }
+        .btn-danger { background: #e74c3c; border-color: #c0392b; }
+        .btn-warn { background: #f39c12; border-color: #d35400; }
 
-        /* Listen & Karten */
-        #playlist-list { max-height: 250px; overflow-y: auto; margin-top: 10px; }
-        .playlist-item {
-            display: flex; align-items: center; background: rgba(255,255,255,0.1);
-            padding: 8px; margin-bottom: 6px; border-radius: 8px; cursor: pointer;
+        /* MENU GRID */
+        .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .mode-card {
+            background: rgba(255,255,255,0.15); padding: 15px 10px; border-radius: 12px; cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+            transition: background 0.2s; border: 1px solid transparent;
         }
-        .playlist-item img { width: 40px; height: 40px; border-radius: 6px; margin-right: 10px; }
-        .playlist-info { text-align: left; }
+        .mode-card:hover { background: rgba(255,255,255,0.25); border-color: white; }
+        .mode-card i { font-size: 1.5rem; margin-bottom: 5px; }
+        .mode-card span { font-size: 0.8rem; font-weight: bold; }
+        .mode-desc { font-size: 0.7rem; opacity: 0.7; font-weight: normal; }
 
-        /* Vinyl */
-        .vinyl-wrapper-sm { width: 100px; height: 100px; margin: 10px auto; position: relative; }
+        /* VINYL & PLAYER */
+        .vinyl-wrapper-sm { width: 100px; height: 100px; margin: 10px auto; position: relative; flex-shrink: 0; }
         .vinyl {
             width: 100%; height: 100%; background: radial-gradient(#333, #111);
-            border-radius: 50%; border: 2px solid #111; display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; border: 3px solid #111; display: flex; align-items: center; justify-content: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
-        .vinyl-label { width: 40%; height: 40%; background: var(--primary); border-radius: 50%; border: 2px solid white; background-size: cover; }
+        .vinyl-label { width: 40%; height: 40%; background: var(--primary); border-radius: 50%; border: 2px solid white; background-size: cover; transition: filter 0.3s; }
         .spinning { animation: spin 4s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Timer */
-        .timer-container { width: 100%; height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; margin: 10px 0; overflow: hidden; }
-        .timer-bar { height: 100%; width: 100%; background: #2ecc71; transform-origin: left; }
-        .animate-timer { animation: shrink 30s linear forwards; }
-        @keyframes shrink { 0% { transform: scaleX(1); background:#2ecc71; } 50% { background:#f1c40f; } 100% { transform: scaleX(0); background:#e74c3c; } }
-
-        /* Timeline Specifics */
+        /* TIMELINE SPECIFIC */
         .timeline-container {
-            display: flex; flex-direction: column; gap: 8px; overflow-y: auto; max-height: 55vh; padding: 10px 5px;
+            display: flex; flex-direction: column; gap: 8px; overflow-y: auto; max-height: 50vh; padding: 5px;
             background: rgba(0,0,0,0.15); border-radius: 12px; margin-top: 10px;
         }
         .timeline-card {
@@ -89,40 +92,43 @@
         }
         .insert-btn {
             background: rgba(255,255,255,0.15); border: 2px dashed rgba(255,255,255,0.3);
-            color: white; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: bold;
-            transition: all 0.1s; text-transform: uppercase; letter-spacing: 1px;
+            color: white; padding: 10px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: bold;
         }
-        .insert-btn:active { background: rgba(255,255,255,0.4); transform: scale(0.98); }
 
-        /* MC Grid */
-        .mc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .mc-btn { height: 75px; font-size: 0.85rem; white-space: normal; line-height: 1.2; padding: 5px; }
+        /* 1-SECOND & BLUR SPECIFIC */
+        .blur-container { width: 200px; height: 200px; margin: 20px auto; overflow: hidden; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .blur-img { width: 100%; height: 100%; object-fit: cover; filter: blur(30px); transform: scale(1.1); }
+        .unblur-anim { animation: unblur 20s linear forwards; }
+        @keyframes unblur { to { filter: blur(0px); } }
 
-        /* Overlays */
+        /* UTILITY */
         .hidden { display: none !important; }
         .modal-overlay {
-            position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.9);
-            display: flex; align-items: center; justify-content: center; z-index: 20; flex-direction: column;
-            backdrop-filter: blur(5px);
+            position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.95);
+            display: flex; align-items: center; justify-content: center; z-index: 50; flex-direction: column;
         }
-        .score-change {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 3rem; font-weight: bold; color: #2ecc71; text-shadow: 0 0 20px black;
-            animation: floatUp 1s forwards; pointer-events: none; z-index: 100;
-        }
+        .spinner { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid #fff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 10px; }
+        .score-float { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; font-weight: 900; color: #2ecc71; text-shadow: 0 5px 20px black; animation: floatUp 1s forwards; pointer-events: none; z-index: 100; }
         @keyframes floatUp { to { transform: translate(-50%, -150%); opacity: 0; } }
-        .spinner { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid #fff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
+
+        .timer-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.2); margin: 10px 0; border-radius: 3px; overflow: hidden; }
+        .timer-fill { height: 100%; width: 100%; background: #2ecc71; transform-origin: left; }
+        .timer-anim { animation: timerShrink linear forwards; }
+        @keyframes timerShrink { 0% { transform: scaleX(1); background: #2ecc71; } 50% { background: #f1c40f; } 100% { transform: scaleX(0); background: #e74c3c; } }
+
     </style>
 </head>
 <body>
 
     <div class="app-container">
-        <header><h1>Deez<span>ster</span></h1></header>
+        <header>
+            <h1>Deez<span>ster</span></h1>
+        </header>
 
         <div id="screen-search">
             <p>Wähle eine Playlist:</p>
-            <input type="text" id="search-input" placeholder="Suche (z.B. 80s, Rock)...">
-            <button id="search-btn" class="btn btn-primary">Suchen</button>
+            <input type="text" id="search-input" placeholder="Suche (z.B. 90s, Rock, Disney)...">
+            <button class="btn btn-primary" onclick="searchPlaylists()">Suchen</button>
             <div id="playlist-list">
                 <div class="playlist-item" onclick="selectPlaylist('3155776842', '100% Hits')">
                     <img src="https://e-cdns-images.dzcdn.net/images/playlist/89f6dfc009b0b43d2c0024440f340864/250x250-000000-80-0-0.jpg">
@@ -132,86 +138,95 @@
         </div>
 
         <div id="screen-mode" class="hidden">
-            <h3 id="selected-playlist-name">Playlist</h3>
-            <div style="display: grid; gap: 15px;">
-                <button class="btn btn-primary" onclick="setupGame('mc')" style="height: 80px; font-size: 1.2rem;">
-                    <i class="fas fa-bolt"></i> Highscore Jagd<br><span style="font-size:0.8rem; font-weight:normal; display:block; margin-top:5px;">Ein Fehler = Game Over!</span>
-                </button>
-                <button class="btn btn-primary" onclick="setupGame('timeline')" style="height: 80px; font-size: 1.2rem;">
-                    <i class="fas fa-stream"></i> Timeline (Ordnen)<br><span style="font-size:0.8rem; font-weight:normal; display:block; margin-top:5px;">Sortiere die Jahre (3 Leben)</span>
-                </button>
-            </div>
+            <h3 id="selected-playlist-name" style="color:var(--primary)">Playlist</h3>
+            <p style="margin-bottom: 20px;">Wähle deinen Spielmodus:</p>
 
-            <div id="timeline-settings" class="hidden" style="margin-top:20px; border-top:1px solid rgba(255,255,255,0.2); padding-top:10px;">
-                <p>Karten zum Sieg:</p>
-                <div style="display:flex; gap:10px;">
-                    <button class="btn btn-secondary" onclick="startTimeline(10)">10</button>
-                    <button class="btn btn-secondary" onclick="startTimeline(15)">15</button>
+            <div class="mode-grid">
+                <div class="mode-card" onclick="setupGame('timeline')">
+                    <i class="fas fa-stream" style="color:#3498db"></i>
+                    <span>Timeline</span>
+                    <span class="mode-desc">Ordne die Jahre</span>
+                </div>
+                <div class="mode-card" onclick="setupGame('quiz')">
+                    <i class="fas fa-bolt" style="color:#f1c40f"></i>
+                    <span>Highscore</span>
+                    <span class="mode-desc">Schnelles Quiz</span>
+                </div>
+                <div class="mode-card" onclick="setupGame('hl')">
+                    <i class="fas fa-arrows-alt-v" style="color:#e67e22"></i>
+                    <span>High / Low</span>
+                    <span class="mode-desc">Älter oder Neuer?</span>
+                </div>
+                <div class="mode-card" onclick="setupGame('onesec')">
+                    <i class="fas fa-stopwatch" style="color:#e74c3c"></i>
+                    <span>1 Sekunde</span>
+                    <span class="mode-desc">Erkennst du es?</span>
+                </div>
+                <div class="mode-card" onclick="setupGame('blur')">
+                    <i class="fas fa-image" style="color:#9b59b6"></i>
+                    <span>Cover Blur</span>
+                    <span class="mode-desc">Scharfer Blick</span>
+                </div>
+                <div class="mode-card" onclick="setupGame('duel')">
+                    <i class="fas fa-user-friends" style="color:#2ecc71"></i>
+                    <span>Party Duell</span>
+                    <span class="mode-desc">1 vs 1 (Lokal)</span>
                 </div>
             </div>
-            <button class="btn btn-secondary" onclick="showScreen('screen-search')" style="margin-top:20px;">Zurück</button>
+
+            <button class="btn btn-secondary" onclick="showScreen('screen-search')">Zurück</button>
         </div>
 
-        <div id="screen-game-timeline" class="hidden">
-            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                <div>Ziel: <span id="tl-target">10</span></div>
-                <div id="tl-lives" style="letter-spacing: 3px;">❤️❤️❤️</div>
+        <div id="screen-game" class="hidden">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:0.9rem;">
+                <div id="game-info-left">Score: 0</div>
+                <div id="game-info-right">❤️❤️❤️</div>
             </div>
 
-            <div style="display:flex; align-items:center; gap:10px; background:rgba(0,0,0,0.2); padding:8px; border-radius:12px; margin-bottom:10px;">
-                <div class="vinyl-wrapper-sm" style="width:40px; height:40px; margin:0;"><div class="vinyl" id="tl-vinyl"><div class="vinyl-label"></div></div></div>
-                <div style="flex-grow:1; text-align:left; font-size:0.85rem; opacity:0.8;">Hör dir den Song an...</div>
-                <button id="tl-play-btn" class="btn btn-primary" style="flex-grow:0; width:auto; padding:8px 12px; margin:0;"><i class="fas fa-play"></i></button>
-            </div>
+            <div id="game-content"></div>
 
-            <div id="timeline-area" class="timeline-container">
-                </div>
+            <audio id="audio-player"></audio>
         </div>
 
-        <div id="screen-game-mc" class="hidden">
-            <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 5px;">
-                Score: <span id="mc-score" style="color:var(--primary)">0</span>
-            </div>
-            <div class="timer-container"><div id="timer-bar" class="timer-bar"></div></div>
-            <div class="vinyl-wrapper-sm">
-                <div class="vinyl" id="mc-vinyl"><div class="vinyl-label"></div></div>
-            </div>
-            <button id="mc-play-btn" class="btn btn-primary" style="width:50%; margin: 5px auto;"><i class="fas fa-play"></i> Play</button>
-            <p>Welcher Song läuft?</p>
-            <div id="mc-options" class="mc-grid"></div>
-        </div>
-
-        <div id="loader" class="hidden modal-overlay"><div class="spinner"></div><p style="margin-top:10px;">Lade Musik...</p></div>
+        <div id="loader" class="hidden modal-overlay"><div class="spinner"></div><p>Lade Musik...</p></div>
 
         <div id="game-over" class="hidden modal-overlay">
-            <h1 id="go-title" style="font-size:3rem; margin-bottom:10px;">Game Over</h1>
-            <p id="go-msg" style="font-size:1.2rem; margin:20px 0; max-width:80%; line-height:1.5;">Punkte</p>
+            <h1 id="go-title" style="font-size:2.5rem; margin-bottom:10px;">Game Over</h1>
+            <p id="go-msg" style="font-size:1.1rem; margin:20px 0; max-width:80%; line-height:1.5;">...</p>
             <button class="btn btn-primary" onclick="location.reload()">Neues Spiel</button>
         </div>
 
-        <audio id="audio-player"></audio>
     </div>
 
     <script>
-        /* --- STATE & CONFIG --- */
-        let state = {
+        /* =========================================
+           CORE SYSTEM & STATE
+           ========================================= */
+        const state = {
             playlistId: null,
             tracks: [],
             pool: [],
             currentTrack: null,
+            nextTrack: null,
             isPlaying: false,
-            timeline: [],
-            lives: 3,
-            targetScore: 10,
+            mode: null,
             score: 0,
-            startTime: 0
+            lives: 3,
+            startTime: 0,
+            // Mode Specifics
+            timeline: [],
+            targetScore: 10,
+            hlStreak: 0,
+            secLevel: 1, // 1s, 2s, 4s for OneSec mode
+            duelP1: null,
+            duelP2: null
         };
 
         const els = {
             audio: document.getElementById('audio-player'),
-            tlArea: document.getElementById('timeline-area'),
-            mcOptions: document.getElementById('mc-options'),
-            timerBar: document.getElementById('timer-bar')
+            content: document.getElementById('game-content'),
+            infoLeft: document.getElementById('game-info-left'),
+            infoRight: document.getElementById('game-info-right')
         };
 
         // --- DEEZER API HELPER (JSONP) ---
@@ -226,7 +241,43 @@
             });
         }
 
-        // --- CORE NAVIGATION ---
+        // --- SMART YEAR FIX (ISRC) ---
+        function getYearFromISRC(isrc) {
+            if (!isrc || isrc.length < 7) return null;
+            const yy = parseInt(isrc.substring(5, 7));
+            if (isNaN(yy)) return null;
+            // Wenn YY > 26 (aktuelles Jahr + Puffer), dann 19xx, sonst 20xx
+            return (yy > (new Date().getFullYear() % 100) + 1) ? 1900 + yy : 2000 + yy;
+        }
+
+        async function getSongDetails(track) {
+            try {
+                // Hole Album (für Release Date) und Track (für ISRC falls nicht vorhanden)
+                const albPromise = fetchDeezer(`https://api.deezer.com/album/${track.album.id}`);
+                const trackPromise = track.isrc ? Promise.resolve(track) : fetchDeezer(`https://api.deezer.com/track/${track.id}`);
+                const [alb, tDetails] = await Promise.all([albPromise, trackPromise]);
+
+                let year = parseInt(alb.release_date.split('-')[0]);
+                const isrcYear = getYearFromISRC(tDetails.isrc);
+
+                // Nimm das ältere Jahr (Fix für Remasters)
+                if(isrcYear && isrcYear < year && isrcYear > 1900) year = isrcYear;
+                if(isNaN(year) || year < 1900 || year > 2030) return null;
+
+                return { ...track, year, cover: track.album.cover_xl, cover_med: track.album.cover_medium };
+            } catch(e) { return null; }
+        }
+
+        async function getValidSong() {
+            while(state.pool.length > 0) {
+                const raw = state.pool.pop();
+                const song = await getSongDetails(raw);
+                if(song) return song;
+            }
+            return null;
+        }
+
+        // --- PLAYLIST SELECTION ---
         function showScreen(id) {
             document.querySelectorAll('.app-container > div').forEach(el => {
                 if(!['loader', 'game-over'].includes(el.id)) el.classList.add('hidden');
@@ -240,28 +291,21 @@
             document.getElementById('playlist-list').innerHTML = 'Suche...';
             try {
                 const d = await fetchDeezer(`https://api.deezer.com/search/playlist?q=${encodeURIComponent(q)}`);
-                const html = d.data.map(p => `
-                    <div class="playlist-item" onclick="selectPlaylist('${p.id}', '${p.title.replace(/'/g,"")}')">
+                document.getElementById('playlist-list').innerHTML = d.data.map(p =>
+                    `<div class="playlist-item" onclick="selectPlaylist('${p.id}', '${p.title.replace(/'/g,"")}')">
                         <img src="${p.picture_medium}"><div class="playlist-info"><h4>${p.title}</h4><span>${p.nb_tracks} Songs</span></div>
                     </div>`).join('');
-                document.getElementById('playlist-list').innerHTML = html;
-            } catch(e) { document.getElementById('playlist-list').innerHTML = 'Fehler.'; }
+            } catch(e) { alert("Fehler bei Suche"); }
         }
-        document.getElementById('search-btn').addEventListener('click', searchPlaylists);
 
         async function selectPlaylist(id, name) {
-            state.playlistId = id;
-            document.getElementById('selected-playlist-name').innerText = name;
             document.getElementById('loader').classList.remove('hidden');
             try {
-                const d = await fetchDeezer(`https://api.deezer.com/playlist/${id}/tracks?limit=400`);
-                // Filter: Nur Songs mit Preview und Album
-                state.tracks = d.data.filter(t => t.preview && t.album && t.album.id);
-                if(state.tracks.length < 10) throw new Error("Playlist zu klein (min. 10 spielbare Songs)");
-
-                // Shuffle
+                const d = await fetchDeezer(`https://api.deezer.com/playlist/${id}/tracks?limit=500`);
+                state.tracks = d.data.filter(t => t.preview && t.album);
+                if(state.tracks.length < 15) throw new Error("Playlist zu klein (min. 15 Songs)");
                 state.pool = [...state.tracks].sort(() => 0.5 - Math.random());
-
+                document.getElementById('selected-playlist-name').innerText = name;
                 document.getElementById('loader').classList.add('hidden');
                 showScreen('screen-mode');
             } catch(e) {
@@ -270,30 +314,13 @@
             }
         }
 
-        function setupGame(mode) {
-            if(mode === 'timeline') document.getElementById('timeline-settings').classList.remove('hidden');
-            else startMC();
-        }
-
-        // --- AUDIO ENGINE ---
-        function playTrack(url, vinylId, btnId) {
-            if(state.isPlaying && els.audio.src === url) {
-                els.audio.pause();
-                state.isPlaying = false;
-                if(vinylId) document.getElementById(vinylId).classList.remove('spinning');
-                if(btnId) document.getElementById(btnId).innerHTML = '<i class="fas fa-play"></i>';
-            } else {
-                els.audio.src = url;
-                els.audio.play().catch(e => console.log("Auto-Play blockiert"));
-                state.isPlaying = true;
-                if(vinylId) document.getElementById(vinylId).classList.add('spinning');
-                if(btnId) document.getElementById(btnId).innerHTML = '<i class="fas fa-pause"></i>';
-            }
-            els.audio.onended = () => {
-                state.isPlaying = false;
-                if(vinylId) document.getElementById(vinylId).classList.remove('spinning');
-                if(btnId) document.getElementById(btnId).innerHTML = '<i class="fas fa-play"></i>';
-            };
+        // --- AUDIO CONTROL ---
+        function playAudio(url, loop=false) {
+            els.audio.loop = loop;
+            els.audio.src = url;
+            els.audio.play().catch(e=>console.log("Autoplay blocked"));
+            state.isPlaying = true;
+            document.querySelectorAll('.vinyl').forEach(v => v.classList.add('spinning'));
         }
         function stopAudio() {
             els.audio.pause();
@@ -301,269 +328,438 @@
             document.querySelectorAll('.vinyl').forEach(v => v.classList.remove('spinning'));
         }
 
-        /* --- INTELLIGENTE JAHR-ERMITTLUNG (Der Fix) --- */
-        function getYearFromISRC(isrc) {
-            if (!isrc || isrc.length < 7) return null;
-            const yy = parseInt(isrc.substring(5, 7));
-            if (isNaN(yy)) return null;
-            // 70er, 80er, 90er Check. Wenn YY > (Aktuelles Jahr + 1), dann 19xx.
-            // Bsp: 76 (1976) > 26 (2026).
-            return (yy > (new Date().getFullYear() % 100) + 1) ? 1900 + yy : 2000 + yy;
-        }
-
-        async function getSongDetails(track) {
-            try {
-                // Parallel Request für Speed
-                const albPromise = fetchDeezer(`https://api.deezer.com/album/${track.album.id}`);
-                const trackPromise = track.isrc ? Promise.resolve(track) : fetchDeezer(`https://api.deezer.com/track/${track.id}`);
-
-                const [alb, tDetails] = await Promise.all([albPromise, trackPromise]);
-
-                // Datum aus Album (Format: YYYY-MM-DD)
-                let albumYear = parseInt(alb.release_date.split('-')[0]);
-
-                // Datum aus ISRC (Oft das "echte" Aufnahmejahr bei Remasters)
-                const isrcYear = getYearFromISRC(tDetails.isrc);
-
-                // Logik: Wenn ISRC älter ist als Album (und plausibel > 1900), nimm ISRC.
-                // Das fixt "Best Of" Alben aus 2010 mit Songs von 1980.
-                let finalYear = albumYear;
-                if(isrcYear && isrcYear < albumYear && isrcYear > 1900) finalYear = isrcYear;
-
-                // Sicherheits-Check: Ungültiges Jahr?
-                if(isNaN(finalYear) || finalYear < 1900 || finalYear > 2030) throw new Error("Ungültiges Jahr");
-
-                return { ...track, year: finalYear, cover: track.album.cover_medium };
-            } catch(e) {
-                // Wenn Daten fehlerhaft sind, Song überspringen durch Fehlerwurf
-                console.warn("Song übersprungen (Datenfehler):", track.title);
-                return null;
-            }
-        }
-
-        // Hilfsfunktion: Holt so lange Songs, bis einer valid ist
-        async function getValidSong() {
-            while(state.pool.length > 0) {
-                const raw = state.pool.pop();
-                const song = await getSongDetails(raw);
-                if(song) return song;
-            }
-            return null;
-        }
-
-        /* --- TIMELINE GAME LOGIC --- */
-        async function startTimeline(target) {
-            state.targetScore = target;
+        // --- GAME ROUTER ---
+        function setupGame(mode) {
+            state.mode = mode;
+            state.score = 0;
             state.lives = 3;
+            showScreen('screen-game');
+
+            if(mode === 'timeline') initTimeline();
+            if(mode === 'quiz') initQuiz();
+            if(mode === 'hl') initHL();
+            if(mode === 'onesec') initOneSec();
+            if(mode === 'blur') initBlur();
+            if(mode === 'duel') initDuel();
+        }
+
+        /* =========================================
+           MODE 1: TIMELINE
+           ========================================= */
+        async function initTimeline() {
             state.timeline = [];
-            updateLives();
-            document.getElementById('tl-target').innerText = target;
+            state.targetScore = 10;
+            updateHeader(`Ziel: ${state.targetScore}`, getHearts());
 
             document.getElementById('loader').classList.remove('hidden');
             const start = await getValidSong();
-            if(!start) return endGame(true, "Keine spielbaren Songs gefunden.");
-
             state.timeline.push(start);
-            await nextTimelineRound();
-            document.getElementById('loader').classList.add('hidden');
-            showScreen('screen-game-timeline');
-            renderTimeline();
+            nextTimeline();
         }
 
-        async function nextTimelineRound() {
+        async function nextTimeline() {
             const song = await getValidSong();
             if(!song) return endGame(true, "Playlist leer!");
             state.currentTrack = song;
+            document.getElementById('loader').classList.add('hidden');
 
-            // UI Update
-            document.querySelector('#tl-vinyl .vinyl-label').style.backgroundImage = `url(${state.currentTrack.cover})`;
-            document.getElementById('tl-play-btn').onclick = () => playTrack(state.currentTrack.preview, 'tl-vinyl', 'tl-play-btn');
-            playTrack(state.currentTrack.preview, 'tl-vinyl', 'tl-play-btn');
+            renderTimelineUI();
+            playAudio(song.preview, true);
         }
 
-        function renderTimeline() {
-            const area = els.tlArea;
-            area.innerHTML = ''; // Clear old buttons
+        function renderTimelineUI() {
+            let html = `
+                <div style="display:flex; align-items:center; gap:15px; margin-bottom:15px; background:rgba(0,0,0,0.2); padding:10px; border-radius:12px;">
+                    <div class="vinyl-wrapper-sm" style="width:60px; height:60px; margin:0;"><div class="vinyl"><div class="vinyl-label" style="background-image:url(${state.currentTrack.cover_med})"></div></div></div>
+                    <div style="text-align:left; font-size:0.9rem;"><strong>Hör mal rein...</strong><br>Wo gehört dieser Song hin?</div>
+                    <button class="btn btn-primary" style="width:auto; margin:0;" onclick="togglePlayBtn(this)"><i class="fas fa-pause"></i></button>
+                </div>
+                <div class="timeline-container">
+            `;
 
-            // Logik: Wir brauchen N+1 Buttons für N Karten.
-            // Button 0 (Ganz oben) -> Karte 0 -> Button 1 -> Karte 1 -> ...
-
-            // 1. Oberster Button
-            area.appendChild(createInsertBtn(0));
-
-            state.timeline.forEach((song, i) => {
-                // Die Karte
-                const card = document.createElement('div');
-                card.className = 'timeline-card';
-                card.innerHTML = `
-                    <div style="font-weight:800; color:var(--primary); font-size:1.3rem; min-width:50px;">${song.year}</div>
-                    <img src="${song.cover}" style="width:45px; height:45px; border-radius:6px;">
-                    <div style="text-align:left; font-size:0.85rem; flex-grow:1; line-height:1.2;">
-                        <strong>${song.title}</strong><br><span style="opacity:0.8; font-size:0.75rem;">${song.artist.name}</span>
-                    </div>`;
-                area.appendChild(card);
-
-                // Button darunter (Index i+1)
-                area.appendChild(createInsertBtn(i + 1));
+            html += `<div class="insert-btn" onclick="checkTimeline(0)">Hier einfügen</div>`;
+            state.timeline.forEach((s, i) => {
+                html += `
+                    <div class="timeline-card">
+                        <div style="font-weight:800; color:var(--primary); font-size:1.2rem; min-width:50px;">${s.year}</div>
+                        <img src="${s.cover_med}" style="width:40px; height:40px; border-radius:6px;">
+                        <div style="text-align:left; font-size:0.8rem; line-height:1.2;"><strong>${s.title}</strong><br>${s.artist.name}</div>
+                    </div>
+                    <div class="insert-btn" onclick="checkTimeline(${i+1})">Hier einfügen</div>
+                `;
             });
+            html += `</div>`;
+            els.content.innerHTML = html;
         }
 
-        function createInsertBtn(index) {
-            const d = document.createElement('div');
-            d.className = 'insert-btn';
-            d.innerHTML = 'Hier einfügen';
-            d.onclick = () => checkTimeline(index);
-            return d;
-        }
-
-        function checkTimeline(i) {
-            stopAudio();
+        function checkTimeline(index) {
             const y = state.currentTrack.year;
-            // Prüfung: Karte an Index i bedeutet: Sie muss NACH i-1 und VOR i sein.
-            const prev = state.timeline[i-1]; // Karte davor (kann undefined sein bei i=0)
-            const next = state.timeline[i];   // Karte danach (kann undefined sein bei i=length)
-
-            // Fehlerbedingungen:
-            // 1. Es gibt eine Karte davor, aber unser Jahr ist kleiner (älter)
-            // 2. Es gibt eine Karte danach, aber unser Jahr ist größer (neuer)
-            // (Gleiches Jahr ist erlaubt!)
+            const prev = state.timeline[index-1];
+            const next = state.timeline[index];
             const errorPrev = prev && y < prev.year;
             const errorNext = next && y > next.year;
 
             if(errorPrev || errorNext) {
-                // Falsch
                 state.lives--;
-                updateLives();
-
-                // Besseres Feedback
-                let msg = `Falsch! Der Song ist von ${y}.`;
-                if(errorPrev) msg += `\n(Er ist älter als ${prev.year})`;
-                else if(errorNext) msg += `\n(Er ist neuer als ${next.year})`;
-
-                alert(msg);
-
+                updateHeader(`Ziel: ${state.targetScore}`, getHearts());
+                alert(`Falsch! Es war ${y}.`);
                 if(state.lives <= 0) endGame(false, "Keine Leben mehr.");
                 else {
                     document.getElementById('loader').classList.remove('hidden');
-                    nextTimelineRound().then(() => document.getElementById('loader').classList.add('hidden'));
+                    nextTimeline();
                 }
             } else {
-                // Richtig
-                state.timeline.splice(i, 0, state.currentTrack); // Einfügen
-
-                if(state.timeline.length >= state.targetScore) {
-                    endGame(true, `Glückwunsch! Du hast ${state.targetScore} Karten korrekt sortiert.`);
-                } else {
-                    renderTimeline(); // Neu zeichnen mit neuer Karte
+                state.timeline.splice(index, 0, state.currentTrack);
+                if(state.timeline.length >= state.targetScore) endGame(true, "Timeline komplett!");
+                else {
                     document.getElementById('loader').classList.remove('hidden');
-                    nextTimelineRound().then(() => document.getElementById('loader').classList.add('hidden'));
+                    nextTimeline();
                 }
             }
         }
 
-        function updateLives() {
-            document.getElementById('tl-lives').innerText = "❤️".repeat(state.lives) + "🖤".repeat(3-state.lives);
+        /* =========================================
+           MODE 2: HIGHSCORE QUIZ
+           ========================================= */
+        async function initQuiz() {
+            updateHeader("Score: 0", "");
+            nextQuiz();
         }
 
-        /* --- HIGHSCORE MC GAME --- */
-        function startMC() {
-            state.score = 0;
-            document.getElementById('mc-score').innerText = 0;
-            showScreen('screen-game-mc');
-            nextMCRound();
-        }
+        async function nextQuiz() {
+            document.getElementById('loader').classList.remove('hidden');
+            const target = await getValidSong();
+            if(!target) return endGame(true, `Score: ${state.score}`);
 
-        async function nextMCRound() {
-            if(state.pool.length < 4) return endGame(true, `Playlist leer! Score: ${state.score}`);
-
-            const targetRaw = state.pool.pop();
-            const target = await getSongDetails(targetRaw); // Ensure clean data
-            if(!target) return nextMCRound(); // Skip invalid
-
-            // Decoys suchen
+            // Decoys
             const decoys = [];
-            let safety = 0;
-            while(decoys.length < 3 && safety < 100) {
-                safety++;
+            while(decoys.length < 3) {
                 const d = state.pool[Math.floor(Math.random() * state.pool.length)];
                 if(d.id !== target.id && !decoys.find(x => x.id === d.id)) decoys.push(d);
             }
-            if(decoys.length < 3) return endGame(true, `Zu wenig Songs übrig. Score: ${state.score}`);
-
             state.currentTrack = target;
 
-            // UI Reset
-            stopAudio();
-            const vLabel = document.querySelector('#mc-vinyl .vinyl-label');
-            vLabel.style.backgroundImage = 'none';
-            vLabel.style.backgroundColor = '#333';
+            const options = [target, ...decoys].sort(()=>0.5-Math.random());
 
-            document.getElementById('mc-play-btn').onclick = () => playTrack(state.currentTrack.preview, 'mc-vinyl', 'mc-play-btn');
-            playTrack(state.currentTrack.preview, 'mc-vinyl', 'mc-play-btn');
+            document.getElementById('loader').classList.add('hidden');
 
-            // Render Buttons
-            const options = [target, ...decoys].sort(() => 0.5 - Math.random());
-            els.mcOptions.innerHTML = '';
-            options.forEach(o => {
-                const btn = document.createElement('button');
-                btn.className = 'btn btn-secondary mc-btn';
-                btn.innerText = o.title;
-                btn.onclick = () => checkMC(btn, o.id === target.id);
-                els.mcOptions.appendChild(btn);
-            });
-
-            // Start Timer
-            els.timerBar.classList.remove('animate-timer');
-            void els.timerBar.offsetWidth; // Force Reflow
-            els.timerBar.classList.add('animate-timer');
+            let html = `
+                <div class="timer-bar"><div class="timer-fill timer-anim" style="animation-duration:30s;"></div></div>
+                <div class="vinyl-wrapper-sm"><div class="vinyl"><div class="vinyl-label" style="background:#333;"></div></div></div>
+                <div class="mode-grid" style="margin-top:20px;">
+                    ${options.map(o => `<button class="btn btn-secondary" style="height:70px; white-space:normal; font-size:0.85rem;" onclick="checkQuiz(this, ${o.id===target.id})">${o.title}</button>`).join('')}
+                </div>
+            `;
+            els.content.innerHTML = html;
+            playAudio(target.preview, true);
             state.startTime = Date.now();
         }
 
-        function checkMC(btn, isCorrect) {
+        function checkQuiz(btn, correct) {
             stopAudio();
-            els.timerBar.style.animationPlayState = 'paused';
-            document.querySelector('#mc-vinyl .vinyl-label').style.backgroundImage = `url(${state.currentTrack.cover})`;
+            document.querySelector('.timer-fill').style.animationPlayState = 'paused';
+            document.querySelector('.vinyl-label').style.backgroundImage = `url(${state.currentTrack.cover})`;
 
-            if(isCorrect) {
-                // Score Calculation
+            if(correct) {
                 const ms = Date.now() - state.startTime;
-                // Max 1000 Punkte, Minimum 100. Zeitfenster 30s.
-                // 1000 - (30pkt pro Sekunde)
-                let pts = Math.max(100, Math.floor(1000 - (ms / 30)));
-
+                const pts = Math.max(100, Math.floor(1000 - (ms/30)));
                 state.score += pts;
-                document.getElementById('mc-score').innerText = state.score;
-
-                btn.classList.replace('btn-secondary', 'btn-success');
-                showFloatingPoints(pts);
-
-                setTimeout(nextMCRound, 1500);
+                updateHeader(`Score: ${state.score}`, "");
+                btn.className = "btn btn-success";
+                showFloatingScore(pts);
+                setTimeout(nextQuiz, 1500);
             } else {
-                btn.classList.replace('btn-secondary', 'btn-danger');
-                // Zeige Richtige
-                Array.from(els.mcOptions.children).forEach(b => {
-                    if(b.innerText === state.currentTrack.title) b.classList.add('btn-success');
-                });
-                setTimeout(() => endGame(false, `Falsch! Highscore: ${state.score}`), 2000);
+                btn.className = "btn btn-danger";
+                setTimeout(() => endGame(false, `Final Score: ${state.score}`), 1500);
             }
         }
 
-        function showFloatingPoints(pts) {
-            const el = document.createElement('div');
-            el.className = 'score-change';
-            el.innerText = `+${pts}`;
-            document.getElementById('screen-game-mc').appendChild(el);
-            setTimeout(() => el.remove(), 1000);
+        /* =========================================
+           MODE 3: HIGHER OR LOWER
+           ========================================= */
+        async function initHL() {
+            state.hlStreak = 0;
+            state.lives = 3;
+            updateHeader("Streak: 0", getHearts());
+
+            document.getElementById('loader').classList.remove('hidden');
+            state.currentTrack = await getValidSong(); // Reference
+            nextHL();
         }
 
-        // --- GLOBAL END ---
+        async function nextHL() {
+            state.nextTrack = await getValidSong(); // Challenger
+            if(!state.nextTrack) return endGame(true, `Streak: ${state.hlStreak}`);
+
+            document.getElementById('loader').classList.add('hidden');
+
+            let html = `
+                <div class="timeline-card" style="opacity:0.8; transform:scale(0.95); margin-bottom:20px;">
+                    <div style="font-weight:800; font-size:1.2rem; color:var(--primary);">${state.currentTrack.year}</div>
+                    <img src="${state.currentTrack.cover_med}" style="width:40px; height:40px; border-radius:4px;">
+                    <div style="text-align:left; font-size:0.8rem;">${state.currentTrack.title}</div>
+                </div>
+
+                <p style="font-size:1.1rem; font-weight:bold; margin:20px 0;">Ist dieser Song...</p>
+
+                <div class="vinyl-wrapper-sm"><div class="vinyl"><div class="vinyl-label" style="background:#333;"></div></div></div>
+
+                <div style="display:flex; gap:15px; margin-top:20px;">
+                    <button class="btn btn-warn" style="flex:1; height:60px;" onclick="checkHL('older')">ÄLTER 🔽</button>
+                    <button class="btn btn-success" style="flex:1; height:60px;" onclick="checkHL('newer')">NEUER 🔼</button>
+                </div>
+            `;
+            els.content.innerHTML = html;
+            playAudio(state.nextTrack.preview, true);
+        }
+
+        function checkHL(guess) {
+            stopAudio();
+            const ref = state.currentTrack.year;
+            const target = state.nextTrack.year;
+            document.querySelector('.vinyl-label').style.backgroundImage = `url(${state.nextTrack.cover})`;
+
+            const isOlder = target < ref;
+            const isNewer = target > ref;
+            const isSame = target === ref; // Bonus win
+
+            let win = (guess === 'older' && isOlder) || (guess === 'newer' && isNewer) || isSame;
+
+            if(win) {
+                state.hlStreak++;
+                updateHeader(`Streak: ${state.hlStreak}`, getHearts());
+                alert(`Richtig! (${target})`);
+                state.currentTrack = state.nextTrack; // Move up
+                document.getElementById('loader').classList.remove('hidden');
+                nextHL();
+            } else {
+                state.lives--;
+                updateHeader(`Streak: ${state.hlStreak}`, getHearts());
+                alert(`Falsch! Er war von ${target}.`);
+                if(state.lives<=0) endGame(false, `Streak: ${state.hlStreak}`);
+                else {
+                    document.getElementById('loader').classList.remove('hidden');
+                    nextHL();
+                }
+            }
+        }
+
+        /* =========================================
+           MODE 4: 1-SECOND CHALLENGE
+           ========================================= */
+        async function initOneSec() {
+            state.score = 0;
+            updateHeader(`Score: 0`, "🎵");
+            nextOneSec();
+        }
+
+        async function nextOneSec() {
+            document.getElementById('loader').classList.remove('hidden');
+            const target = await getValidSong();
+            if(!target) return endGame(true, `Score: ${state.score}`);
+
+            // Decoys
+            const decoys = [];
+            while(decoys.length < 3) {
+                const d = state.pool[Math.floor(Math.random() * state.pool.length)];
+                if(d.id !== target.id && !decoys.find(x => x.id === d.id)) decoys.push(d);
+            }
+            state.currentTrack = target;
+            state.secLevel = 1; // Start with 1 sec cost
+
+            document.getElementById('loader').classList.add('hidden');
+
+            let html = `
+                <div class="vinyl-wrapper-sm"><div class="vinyl"><div class="vinyl-label" style="background:#333;"></div></div></div>
+                <div style="display:flex; gap:10px; justify-content:center; margin:20px 0;">
+                    <button class="btn btn-primary" onclick="playSnippet(1000)">1 Sekunde hören</button>
+                    <button class="btn btn-warn" onclick="playSnippet(3000); state.secLevel=3;">+3s (-500 Pkt)</button>
+                </div>
+                <div class="mode-grid">
+                    ${[target, ...decoys].sort(()=>0.5-Math.random()).map(o =>
+                        `<button class="btn btn-secondary" style="height:70px; font-size:0.85rem;" onclick="checkOneSec(this, ${o.id===target.id})">${o.title}</button>`
+                    ).join('')}
+                </div>
+            `;
+            els.content.innerHTML = html;
+            playSnippet(1000); // Auto start 1s
+        }
+
+        function playSnippet(ms) {
+            stopAudio();
+            els.audio.src = state.currentTrack.preview;
+            els.audio.currentTime = 0;
+            els.audio.play();
+            document.querySelectorAll('.vinyl').forEach(v => v.classList.add('spinning'));
+            setTimeout(() => stopAudio(), ms);
+        }
+
+        function checkOneSec(btn, correct) {
+            stopAudio();
+            document.querySelector('.vinyl-label').style.backgroundImage = `url(${state.currentTrack.cover})`;
+
+            if(correct) {
+                let pts = state.secLevel === 1 ? 1000 : 500;
+                state.score += pts;
+                updateHeader(`Score: ${state.score}`, "🎵");
+                btn.className = "btn btn-success";
+                showFloatingScore(pts);
+                setTimeout(nextOneSec, 1500);
+            } else {
+                btn.className = "btn btn-danger";
+                setTimeout(() => endGame(false, `Score: ${state.score}`), 1500);
+            }
+        }
+
+        /* =========================================
+           MODE 5: COVER BLUR
+           ========================================= */
+        async function initBlur() {
+            state.score = 0;
+            updateHeader("Score: 0", "🖼️");
+            nextBlur();
+        }
+
+        async function nextBlur() {
+            document.getElementById('loader').classList.remove('hidden');
+            const target = await getValidSong();
+
+            // Decoys (Artists this time)
+            const decoys = [];
+            while(decoys.length < 3) {
+                const d = state.pool[Math.floor(Math.random() * state.pool.length)];
+                if(d.id !== target.id && !decoys.find(x => x.id === d.id)) decoys.push(d);
+            }
+            state.currentTrack = target;
+
+            document.getElementById('loader').classList.add('hidden');
+
+            let html = `
+                <div class="blur-container">
+                    <img src="${target.cover}" class="blur-img unblur-anim">
+                </div>
+                <p>Wer ist das?</p>
+                <div class="mode-grid">
+                    ${[target, ...decoys].sort(()=>0.5-Math.random()).map(o =>
+                        `<button class="btn btn-secondary" style="height:60px;" onclick="checkBlur(this, ${o.id===target.id})">${o.artist.name}</button>`
+                    ).join('')}
+                </div>
+            `;
+            els.content.innerHTML = html;
+            playAudio(target.preview, true);
+            state.startTime = Date.now();
+        }
+
+        function checkBlur(btn, correct) {
+            stopAudio();
+            // Stop animation by setting blur to 0 immediately via class replacement
+            document.querySelector('.blur-img').style.filter = 'blur(0px)';
+
+            if(correct) {
+                const ms = Date.now() - state.startTime;
+                // 20s animation. Max score 1000.
+                let pts = Math.max(100, Math.floor(1000 - (ms/20)));
+                state.score += pts;
+                updateHeader(`Score: ${state.score}`, "🖼️");
+                btn.className = "btn btn-success";
+                showFloatingScore(pts);
+                setTimeout(nextBlur, 2000);
+            } else {
+                btn.className = "btn btn-danger";
+                setTimeout(() => endGame(false, `Score: ${state.score}`), 2000);
+            }
+        }
+
+        /* =========================================
+           MODE 6: PARTY DUEL (1 vs 1)
+           ========================================= */
+        async function initDuel() {
+            state.score = { p1: 0, p2: 0 };
+            updateHeader("P1: 0", "P2: 0");
+            nextDuelRound();
+        }
+
+        async function nextDuelRound() {
+            document.getElementById('loader').classList.remove('hidden');
+            state.currentTrack = await getValidSong();
+            document.getElementById('loader').classList.add('hidden');
+
+            let html = `
+                <div class="vinyl-wrapper-sm"><div class="vinyl"><div class="vinyl-label" style="background:#333;"></div></div></div>
+                <button class="btn btn-primary" onclick="playAudio('${state.currentTrack.preview}', true)">Audio Starten</button>
+                <hr style="border:0; border-top:1px solid rgba(255,255,255,0.2); margin:15px 0;">
+
+                <div style="text-align:left; margin-bottom:10px;">Spieler 1 Tipp:</div>
+                <input type="number" id="p1-input" placeholder="Jahr..." style="margin-bottom:20px;">
+
+                <div style="text-align:left; margin-bottom:10px;">Spieler 2 Tipp:</div>
+                <input type="number" id="p2-input" placeholder="Jahr...">
+
+                <button class="btn btn-success" style="margin-top:20px;" onclick="resolveDuel()">Auflösen</button>
+            `;
+            els.content.innerHTML = html;
+        }
+
+        function resolveDuel() {
+            const p1 = parseInt(document.getElementById('p1-input').value);
+            const p2 = parseInt(document.getElementById('p2-input').value);
+
+            if(!p1 || !p2) return alert("Beide müssen tippen!");
+
+            stopAudio();
+            const real = state.currentTrack.year;
+            document.querySelector('.vinyl-label').style.backgroundImage = `url(${state.currentTrack.cover})`;
+
+            const diff1 = Math.abs(real - p1);
+            const diff2 = Math.abs(real - p2);
+
+            let msg = `Jahr: ${real}\n`;
+            if(diff1 < diff2) { state.score.p1++; msg += "Punkt für Spieler 1!"; }
+            else if(diff2 < diff1) { state.score.p2++; msg += "Punkt für Spieler 2!"; }
+            else { msg += "Unentschieden!"; }
+
+            alert(msg);
+            updateHeader(`P1: ${state.score.p1}`, `P2: ${state.score.p2}`);
+            nextDuelRound();
+        }
+
+        /* =========================================
+           GLOBAL HELPERS
+           ========================================= */
+        function togglePlayBtn(btn) {
+            if(state.isPlaying) {
+                stopAudio();
+                btn.innerHTML = '<i class="fas fa-play"></i>';
+            } else {
+                playAudio(state.currentTrack.preview, true);
+                btn.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+        }
+
+        function updateHeader(left, right) {
+            els.infoLeft.innerText = left;
+            els.infoRight.innerText = right;
+        }
+
+        function getHearts() {
+            return "❤️".repeat(state.lives) + "🖤".repeat(3-state.lives);
+        }
+
+        function showFloatingScore(pts) {
+            const el = document.createElement('div');
+            el.className = 'score-float';
+            el.innerText = `+${pts}`;
+            document.body.appendChild(el);
+            setTimeout(()=>el.remove(), 1000);
+        }
+
         function endGame(win, msg) {
             stopAudio();
             document.getElementById('go-title').innerText = win ? "Sieg!" : "Game Over";
-            document.getElementById('go-title').style.color = win ? "#2ecc71" : "#e74c3c";
             document.getElementById('go-msg').innerText = msg;
             document.getElementById('game-over').classList.remove('hidden');
         }
+
     </script>
 </body>
 </html>
