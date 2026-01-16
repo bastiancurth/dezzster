@@ -3,200 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Deezster 4.1</title>
+    <title>Deezster 4.2 Ultimate</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         /* --- 1. DESIGN VARIABLES --- */
         :root {
             --primary: #FF3CAC;
-            --glass-bg: rgba(18, 18, 18, 0.85); /* Viel dunkler & undurchsichtiger für Kontrast */
-            --glass-border: 1px solid rgba(255, 255, 255, 0.3); /* Hellere Kante */
-            --glass-highlight: rgba(255, 255, 255, 0.15);
+            --glass-bg: rgba(18, 18, 18, 0.85);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.3);
             --radius: 24px;
             --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --text-shadow: 0 2px 4px rgba(0,0,0,0.9); /* Starker Schatten für Lesbarkeit */
+            --text-shadow: 0 2px 4px rgba(0,0,0,0.9);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font); -webkit-tap-highlight-color: transparent; }
 
-        /* --- 2. BACKGROUND & VISUALIZER --- */
+        /* --- 2. BACKGROUND --- */
         body {
             background-color: #000;
             background-image: linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
             background-size: 200% 200%;
             height: 100vh; width: 100vw;
             display: flex; justify-content: center; align-items: center;
-            overflow: hidden;
-            color: #ffffff; /* Global White Text */
+            overflow: hidden; color: #ffffff;
         }
-
-        /* Animationen */
         body.idle { animation: moveGradient 20s ease infinite; }
         body.playing { animation: moveGradient 3s linear infinite; }
-        @keyframes moveGradient {
-            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
-        }
+        @keyframes moveGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 
-        /* --- 3. APP FRAME (Lesbarkeit optimiert) --- */
+        /* --- 3. APP FRAME --- */
         .app-frame {
             width: 100%; height: 100%;
-            background: var(--glass-bg);
-            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            background: var(--glass-bg); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
             display: flex; flex-direction: column; position: relative;
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
-
         @media (min-width: 768px) {
-            .app-frame {
-                width: 90%; max-width: 1000px; height: 90%;
-                border-radius: var(--radius);
-                border: var(--glass-border);
-            }
+            .app-frame { width: 90%; max-width: 1000px; height: 90%; border-radius: var(--radius); border: var(--glass-border); }
         }
 
-        /* --- 4. TYPOGRAPHY (High Contrast) --- */
-        h1, h2, h3, h4, p, div, span, button, input {
-            color: #ffffff !important;
-            text-shadow: var(--text-shadow);
-        }
+        /* --- 4. UI --- */
+        h1, h2, h3, h4, p, div, span, button, input { color: #ffffff !important; text-shadow: var(--text-shadow); }
 
-        /* --- 5. UI COMPONENTS --- */
-
-        /* Header */
-        header {
-            padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0;
-            background: rgba(0,0,0,0.3);
-        }
+        header { padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; background: rgba(0,0,0,0.3); }
         .brand { font-size: 1.8rem; font-weight: 900; letter-spacing: -1px; }
         .brand span { color: #5edfff !important; }
         .status-pill { background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 50px; font-weight: bold; border: 1px solid rgba(255,255,255,0.3); }
 
-        /* Screens */
-        .screen {
-            flex: 1; display: flex; flex-direction: column; overflow: hidden;
-            position: absolute; top: 80px; bottom: 0; left: 0; right: 0;
-            opacity: 0; pointer-events: none; transform: scale(0.98); transition: all 0.3s ease;
-        }
+        .screen { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: absolute; top: 80px; bottom: 0; left: 0; right: 0; opacity: 0; pointer-events: none; transform: scale(0.98); transition: all 0.3s ease; }
         .screen.active { opacity: 1; pointer-events: all; transform: scale(1); z-index: 10; position: relative; top: 0; }
-
-        /* Scroll Areas */
         .scroll-y { overflow-y: auto; padding: 20px 30px; flex: 1; }
 
-        /* Buttons */
-        .btn {
-            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4);
-            padding: 15px 25px; border-radius: 16px; font-size: 1rem; font-weight: 700;
-            cursor: pointer; transition: all 0.1s; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-        .btn:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
+        .btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4); padding: 15px 25px; border-radius: 16px; font-size: 1rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
         .btn:active { transform: scale(0.96); }
         .btn-primary { background: #ffffff; color: #000000 !important; text-shadow: none; border: none; }
         .btn-large { width: 100%; padding: 20px; font-size: 1.1rem; margin-top: 10px; }
         .btn-back { margin-top: 20px; width: 100%; background: rgba(0,0,0,0.6); }
-
         .btn-success { background: #2ecc71 !important; border-color: #27ae60 !important; }
         .btn-danger { background: #e74c3c !important; border-color: #c0392b !important; }
 
         /* Search */
         .search-container { display: flex; gap: 10px; margin-bottom: 20px; }
-        input {
-            flex: 1; padding: 15px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.5);
-            background: rgba(0,0,0,0.5); outline: none; font-size: 1rem;
-        }
+        input { flex: 1; padding: 15px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.5); background: rgba(0,0,0,0.5); outline: none; font-size: 1rem; }
         input::placeholder { color: rgba(255,255,255,0.7) !important; text-shadow: none; }
 
-        /* Cards */
-        .playlist-card {
-            display: flex; align-items: center; gap: 20px; background: rgba(255,255,255,0.1);
-            padding: 15px; border-radius: 16px; cursor: pointer; transition: background 0.2s;
-            margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.2);
-        }
-        .playlist-card:hover { background: rgba(255,255,255,0.25); }
+        /* Playlist Cards */
+        .playlist-card { display: flex; align-items: center; gap: 20px; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 16px; cursor: pointer; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.2); }
         .playlist-img { width: 70px; height: 70px; border-radius: 12px; object-fit: cover; border: 1px solid rgba(255,255,255,0.3); }
+        .hero { background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%); padding: 30px; border-radius: 24px; text-align: center; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.3); }
+        .hero img { width: 180px; height: 180px; border-radius: 20px; margin-bottom: 20px; border: 2px solid rgba(255,255,255,0.2); }
 
-        /* Hero */
-        .hero {
-            background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%);
-            padding: 30px; border-radius: 24px; text-align: center; margin-bottom: 30px;
-            border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .hero img { width: 180px; height: 180px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.2); }
-
-        /* Grid */
+        /* Modes Grid */
         .grid-modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
-        .mode-card {
-            background: rgba(255,255,255,0.15); padding: 20px; border-radius: 20px;
-            text-align: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; aspect-ratio: 1/1;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        .mode-card:hover { background: rgba(255,255,255,0.3); transform: scale(1.05); }
+        .mode-card { background: rgba(255,255,255,0.15); padding: 20px; border-radius: 20px; text-align: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; aspect-ratio: 1/1; }
         .mode-card i { font-size: 2.5rem; margin-bottom: 10px; }
 
-        /* Vinyl */
+        /* Game Elements */
         .vinyl-wrap { width: 150px; height: 150px; position: relative; flex-shrink: 0; margin: 0 auto; }
-        .vinyl {
-            width: 100%; height: 100%; background: radial-gradient(#222, #000);
-            border-radius: 50%; border: 4px solid #333; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-        }
+        .vinyl { width: 100%; height: 100%; background: radial-gradient(#222, #000); border-radius: 50%; border: 4px solid #333; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
         .vinyl-label { width: 40%; height: 40%; background: var(--primary); border-radius: 50%; border: 3px solid white; background-size: cover; }
         .spinning { animation: spin 4s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Timeline Items */
-        .timeline-list { display: flex; flex-direction: column; gap: 10px; padding-bottom: 40px; }
-        .tl-item {
-            background: #ffffff; padding: 15px; border-radius: 12px;
-            display: flex; align-items: center; gap: 15px; font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
+        .tl-item { background: #ffffff; padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 15px; font-weight: bold; }
         .tl-item * { color: #000000 !important; text-shadow: none !important; }
         .tl-year { font-size: 1.4rem; color: var(--primary) !important; font-weight: 900; }
+        .insert-btn { border: 2px dashed rgba(255,255,255,0.6); padding: 15px; border-radius: 12px; text-align: center; font-weight: bold; cursor: pointer; color: white; background: rgba(0,0,0,0.3); }
 
-        .insert-btn {
-            border: 2px dashed rgba(255,255,255,0.6); padding: 15px; border-radius: 12px;
-            text-align: center; font-weight: bold; cursor: pointer; color: white; background: rgba(0,0,0,0.3);
-        }
-        .insert-btn:hover { background: rgba(255,255,255,0.2); border-color: white; }
-
-        /* Quiz Grid */
         .quiz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: auto; }
-        .quiz-option {
-            background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.3);
-            padding: 20px 10px; border-radius: 16px; font-size: 0.95rem; font-weight: 700;
-            text-align: center; cursor: pointer; min-height: 80px;
-            display: flex; align-items: center; justify-content: center; line-height: 1.2;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+        .quiz-option { background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.3); padding: 20px 10px; border-radius: 16px; font-size: 0.95rem; font-weight: 700; text-align: center; cursor: pointer; min-height: 80px; display: flex; align-items: center; justify-content: center; line-height: 1.2; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-        /* Overlays */
-        .overlay {
-            position: absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.95); z-index: 100;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
-        }
-        .overlay.visible { opacity: 1; pointer-events: all; }
-        .spinner {
-            width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.2);
-            border-top: 5px solid white; border-radius: 50%;
-            animation: spin 1s linear infinite; margin-bottom: 20px;
-        }
-        .blur-img { width: 250px; height: 250px; border-radius: 20px; filter: blur(30px); margin: 0 auto; display: block; object-fit: cover; border: 2px solid white; }
-        .anim-unblur { animation: unblur 20s linear forwards; }
+        /* FEEDBACK COLORS */
+        .quiz-option.correct { background: #2ecc71 !important; border-color: #2ecc71 !important; color: white !important; }
+        .quiz-option.wrong { background: #e74c3c !important; border-color: #e74c3c !important; color: white !important; }
+
+        .blur-img { width: 220px; height: 220px; border-radius: 20px; filter: blur(30px); margin: 0 auto; display: block; object-fit: cover; border: 2px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* Animation duration set via JS to match 30s preview */
+        .anim-unblur { animation: unblur 30s linear forwards; }
         @keyframes unblur { to { filter: blur(0px); } }
 
-        .score-float {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 5rem; font-weight: 900; color: #2ecc71 !important; text-shadow: 0 10px 30px black;
-            animation: floatUp 1s forwards; pointer-events: none; z-index: 200;
-        }
+        .overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.95); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .overlay.visible { opacity: 1; pointer-events: all; }
+        .spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.2); border-top: 5px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        .score-float { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 5rem; font-weight: 900; color: #2ecc71 !important; text-shadow: 0 10px 30px black; animation: floatUp 1s forwards; pointer-events: none; z-index: 200; }
         @keyframes floatUp { to { transform: translate(-50%, -150%) scale(1.5); opacity: 0; } }
 
+        .game-header { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 12px; margin-bottom: 10px; font-size: 0.9rem; flex-shrink: 0; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -211,32 +124,25 @@
 
     <div id="screen-home" class="screen active">
         <div class="scroll-y">
-
             <div class="hero">
-                <img src="https://cdn-images.dzcdn.net/images/playlist/13fb7405ac1d1047f2895c2ff9720cf6/500x500-000000-80-0-0.jpg">
+                <img src="https://e-cdns-images.dzcdn.net/images/playlist/372702759e693b7df044c32b57020022/500x500-000000-80-0-0.jpg">
                 <h2>Die geile Mische</h2>
                 <p style="opacity:0.9; margin-bottom:20px;">Die ultimative Party-Collection</p>
                 <button class="btn btn-primary btn-large" onclick="selectPlaylist('14834933783', 'Die geile Mische')">
                     <i class="fas fa-play"></i> JETZT SPIELEN
                 </button>
             </div>
-
             <h3 style="margin-bottom:15px;">Andere Playlist?</h3>
             <div class="search-container">
                 <input type="text" id="search-input" placeholder="Suche (z.B. 80er, Rock, Disney)...">
                 <button class="btn btn-primary btn-icon" onclick="searchPlaylists()"><i class="fas fa-search"></i></button>
             </div>
-
             <div id="playlist-results">
-                <div class="playlist-card" onclick="selectPlaylist('1363560485', 'Germany Top 50')">
+                <div class="playlist-card" onclick="selectPlaylist('1363560485', 'Best of 80s')">
                     <img src="https://e-cdns-images.dzcdn.net/images/playlist/73252538cb1235b2210a693c061d4b68/250x250-000000-80-0-0.jpg" class="playlist-img">
-                    <div>
-                        <div style="font-weight:bold; font-size:1.1rem;">Best of 80s</div>
-                        <div style="opacity:0.8;">Klassiker</div>
-                    </div>
+                    <div><div style="font-weight:bold; font-size:1.1rem;">Best of 80s</div><div style="opacity:0.8;">Klassiker</div></div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -250,7 +156,7 @@
                     <i class="fas fa-stream" style="color:#3498db !important"></i><h4>Timeline</h4><p>Ordne die Jahre</p>
                 </div>
                 <div class="mode-card" onclick="setupGame('quiz')" style="border-color:#f1c40f">
-                    <i class="fas fa-bolt" style="color:#f1c40f !important"></i><h4>Quiz</h4><p>Highscore Jagd</p>
+                    <i class="fas fa-bolt" style="color:#f1c40f !important"></i><h4>Quiz</h4><p>Highscore + Blur</p>
                 </div>
                 <div class="mode-card" onclick="setupGame('hl')" style="border-color:#e67e22">
                     <i class="fas fa-arrows-alt-v" style="color:#e67e22 !important"></i><h4>High/Low</h4><p>Älter oder Neuer?</p>
@@ -258,17 +164,14 @@
                 <div class="mode-card" onclick="setupGame('onesec')" style="border-color:#e74c3c">
                     <i class="fas fa-stopwatch" style="color:#e74c3c !important"></i><h4>1 Sekunde</h4><p>Erkennst du es?</p>
                 </div>
-                <div class="mode-card" onclick="setupGame('blur')" style="border-color:#9b59b6">
-                    <i class="fas fa-image" style="color:#9b59b6 !important"></i><h4>Blur</h4><p>Bilderrätsel</p>
+                <div class="mode-card" onclick="setupGame('rewind')" style="border-color:#ff0099">
+                    <i class="fas fa-history" style="color:#ff0099 !important"></i><h4>Rewind</h4><p>Rückwärts hören</p>
                 </div>
                 <div class="mode-card" onclick="setupGame('duel')" style="border-color:#2ecc71">
                     <i class="fas fa-user-friends" style="color:#2ecc71 !important"></i><h4>Duell</h4><p>1 vs 1 Lokal</p>
                 </div>
             </div>
-
-            <button class="btn btn-large btn-back" onclick="goHome()">
-                <i class="fas fa-arrow-left"></i> Playlist wechseln
-            </button>
+            <button class="btn btn-large btn-back" onclick="goHome()"><i class="fas fa-arrow-left"></i> Playlist wechseln</button>
         </div>
     </div>
 
@@ -278,15 +181,10 @@
                 <i class="fas fa-times"></i> Spiel beenden
             </button>
         </div>
-
         <div id="game-content" class="scroll-y" style="display:flex; flex-direction:column;"></div>
     </div>
 
-    <div id="overlay-load" class="overlay">
-        <div class="spinner"></div>
-        <h3>Lade Musik...</h3>
-    </div>
-
+    <div id="overlay-load" class="overlay"><div class="spinner"></div><h3>Lade Musik...</h3></div>
     <div id="overlay-end" class="overlay">
         <h1 id="end-title" style="font-size:3rem; margin-bottom:10px;">Game Over</h1>
         <p id="end-msg" style="font-size:1.3rem; opacity:0.9; margin-bottom:30px;">Score: 0</p>
@@ -304,7 +202,8 @@
     const state = {
         playlistId: null, tracks: [], pool: [], currentTrack: null, nextTrack: null, isPlaying: false,
         mode: null, score: 0, lives: 3, startTime: 0,
-        timeline: [], targetScore: 10, hlStreak: 0, secLevel: 1, duelP1: 0, duelP2: 0
+        timeline: [], targetScore: 10, hlStreak: 0, secLevel: 1, duelP1: 0, duelP2: 0,
+        audioCtx: null, audioSource: null
     };
 
     const els = {
@@ -327,7 +226,7 @@
         });
     }
 
-    /* --- YEAR FIX --- */
+    /* --- YEAR & DATA FIX --- */
     function getYearFromISRC(isrc) {
         if (!isrc || isrc.length < 7) return null;
         const yy = parseInt(isrc.substring(5, 7));
@@ -346,8 +245,7 @@
             if(isNaN(year) || year < 1900 || year > 2030) return null;
             return {
                 ...track, year,
-                cover: track.album.cover_xl,
-                cover_med: track.album.cover_medium,
+                cover: track.album.cover_xl, cover_med: track.album.cover_medium,
                 title_clean: track.title.replace(/\(.*\)/g, "").trim(),
                 artist_clean: track.artist.name
             };
@@ -367,10 +265,10 @@
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
     }
-    function goHome() { navigate('screen-home'); audioCtrl(false); }
+    function goHome() { navigate('screen-home'); stopAudio(); }
     function loader(show) { document.getElementById('overlay-load').className = show ? 'overlay visible' : 'overlay'; }
 
-    /* --- PLAYLIST --- */
+    /* --- PLAYLIST LOGIC --- */
     async function searchPlaylists() {
         const q = document.getElementById('search-input').value;
         if(!q) return;
@@ -399,11 +297,10 @@
         } catch(e) { loader(false); alert("Fehler: " + e.message); }
     }
 
-    /* --- AUDIO & VISUALIZER --- */
+    /* --- AUDIO ENGINE --- */
     function audioCtrl(play, url=null) {
         if(play && url) {
-            els.audio.src = url; els.audio.play().catch(e=>{});
-            state.isPlaying=true;
+            els.audio.src = url; els.audio.play().catch(e=>{}); state.isPlaying=true;
             els.body.classList.replace('idle', 'playing');
         } else {
             els.audio.pause(); state.isPlaying=false;
@@ -415,24 +312,55 @@
         if(btn) btn.innerHTML = state.isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
     }
 
-    /* --- GAME ENGINE --- */
+    async function playReverse(url) {
+        stopAudio();
+        if (!state.audioCtx) state.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        try {
+            const response = await fetch(url);
+            const arrayBuffer = await response.arrayBuffer();
+            const audioBuffer = await state.audioCtx.decodeAudioData(arrayBuffer);
+            for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
+                const channel = audioBuffer.getChannelData(i);
+                Array.prototype.reverse.call(channel);
+            }
+            const source = state.audioCtx.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(state.audioCtx.destination);
+            source.start();
+            state.audioSource = source; state.isPlaying = true;
+            els.body.classList.replace('idle', 'playing');
+            const v = document.querySelector('.vinyl'); if(v) v.classList.add('spinning');
+            source.onended = () => stopAudio();
+        } catch (e) { alert("Audio Error"); }
+    }
+
+    function stopAudio() {
+        els.audio.pause();
+        if (state.audioSource) { try { state.audioSource.stop(); } catch(e) {} state.audioSource = null; }
+        state.isPlaying = false;
+        els.body.classList.replace('playing', 'idle');
+        document.querySelectorAll('.vinyl').forEach(v => v.classList.remove('spinning'));
+        const btn = document.getElementById('play-toggle-btn');
+        if(btn) btn.innerHTML = '<i class="fas fa-play"></i>';
+    }
+
+    /* --- GAME ROUTER --- */
     function setupGame(mode) {
         state.mode = mode; state.score = 0;
-        state.lives = (mode === 'quiz' || mode === 'onesec') ? 1 : 3;
+        state.lives = (mode === 'quiz' || mode === 'onesec' || mode === 'rewind') ? 1 : 3;
         state.duelP1 = 0; state.duelP2 = 0;
-        updateStatus();
-        navigate('screen-game');
+        updateStatus(); navigate('screen-game');
         if(mode === 'timeline') initTimeline();
         else if(mode === 'quiz') initQuiz();
         else if(mode === 'hl') initHL();
         else if(mode === 'onesec') initOneSec();
-        else if(mode === 'blur') initBlur();
+        else if(mode === 'rewind') initRewind();
         else if(mode === 'duel') initDuel();
     }
     function restartGame() { document.getElementById('overlay-end').classList.remove('visible'); setupGame(state.mode); }
-    function exitGame() { audioCtrl(false); document.getElementById('overlay-end').classList.remove('visible'); navigate('screen-modes'); }
+    function exitGame() { stopAudio(); document.getElementById('overlay-end').classList.remove('visible'); navigate('screen-modes'); }
     function updateStatus() {
-        if(state.mode === 'quiz' || state.mode === 'onesec' || state.mode === 'blur') els.status.innerHTML = `Score: ${state.score}`;
+        if(state.mode === 'quiz' || state.mode === 'onesec' || state.mode === 'rewind') els.status.innerHTML = `Score: ${state.score}`;
         else if(state.mode === 'duel') els.status.innerHTML = `P1: ${state.duelP1} | P2: ${state.duelP2}`;
         else els.status.innerHTML = "❤️".repeat(state.lives);
     }
@@ -440,88 +368,72 @@
     /* --- MODE: TIMELINE --- */
     async function initTimeline() { state.timeline = []; state.targetScore = 10; loader(true); const start = await getValidSong(); state.timeline.push(start); nextTimeline(); }
     async function nextTimeline() {
-        const song = await getValidSong();
-        if(!song) return endGame(true, "Playlist leer!");
-        state.currentTrack = song; loader(false);
-        renderTimelineUI(); audioCtrl(true, song.preview);
+        const song = await getValidSong(); if(!song) return endGame(true, "Playlist leer!");
+        state.currentTrack = song; loader(false); renderTimelineUI(); audioCtrl(true, song.preview);
     }
     function renderTimelineUI() {
-        let html = `
-            <div style="text-align:center; margin-bottom:20px;">
-                <div class="vinyl-wrap" style="margin:0 auto 20px auto;">
-                    <div class="vinyl"><div class="vinyl-label" style="background-image:url(${state.currentTrack.cover_med})"></div></div>
-                </div>
+        let html = `<div style="text-align:center; margin-bottom:20px;">
+                <div class="vinyl-wrap" style="margin:0 auto 20px auto;"><div class="vinyl"><div class="vinyl-label" style="background-image:url(${state.currentTrack.cover_med})"></div></div></div>
                 <button id="play-toggle-btn" class="btn btn-primary" onclick="audioCtrl(!state.isPlaying, '${state.currentTrack.preview}')"><i class="fas fa-pause"></i></button>
-                <p style="margin-top:15px;">Wo passt dieser Song hin?</p>
-            </div>
-            <div class="timeline-list">`;
+                <p style="margin-top:15px;">Wo passt dieser Song hin?</p></div><div class="timeline-list">`;
         html += `<div class="insert-btn" onclick="checkTimeline(0)">Hier (Älter als ${state.timeline[0].year})</div>`;
         state.timeline.forEach((s, i) => {
-            html += `<div class="tl-item"><div class="tl-year">${s.year}</div>
-                    <div style="flex:1;"><div>${s.title_clean}</div><div style="font-size:0.8rem; opacity:0.8;">${s.artist.name}</div></div></div>`;
+            html += `<div class="tl-item"><div class="tl-year">${s.year}</div><div style="flex:1;"><div>${s.title_clean}</div><div style="font-size:0.8rem; opacity:0.8;">${s.artist.name}</div></div></div>`;
             if(i < state.timeline.length) html += `<div class="insert-btn" onclick="checkTimeline(${i+1})">Hier einfügen</div>`;
         });
-        html += `</div>`;
-        els.gameCon.innerHTML = html;
+        html += `</div>`; els.gameCon.innerHTML = html;
     }
     function checkTimeline(i) {
-        audioCtrl(false);
-        const y = state.currentTrack.year;
-        const prev = state.timeline[i-1]; const next = state.timeline[i];
+        stopAudio();
+        const y = state.currentTrack.year; const prev = state.timeline[i-1]; const next = state.timeline[i];
         if((prev && y < prev.year) || (next && y > next.year)) {
             state.lives--; updateStatus(); alert(`Falsch! Jahr war ${y}`);
-            if(state.lives <= 0) endGame(false, "Keine Leben mehr");
-            else { loader(true); nextTimeline(); }
+            if(state.lives <= 0) endGame(false, "Keine Leben mehr"); else { loader(true); nextTimeline(); }
         } else {
             state.timeline.splice(i, 0, state.currentTrack);
-            if(state.timeline.length >= state.targetScore) endGame(true, "Gewonnen!");
-            else { loader(true); nextTimeline(); }
+            if(state.timeline.length >= state.targetScore) endGame(true, "Gewonnen!"); else { loader(true); nextTimeline(); }
         }
     }
 
-    /* --- MODE: QUIZ (FIXED) --- */
+    /* --- MODE: QUIZ 2.0 (MIT BLUR & HIGHLIGHTS) --- */
     async function initQuiz() { nextQuiz(); }
     async function nextQuiz() {
-        loader(true);
-        const target = await getValidSong();
-        if(!target) return endGame(true, `Score: ${state.score}`);
-
-        const decoys = [];
-        let safety = 0;
-        while(decoys.length < 3 && safety < 50) {
-            safety++;
-            const raw = state.pool[Math.floor(Math.random() * state.pool.length)];
+        loader(true); const target = await getValidSong(); if(!target) return endGame(true, `Score: ${state.score}`);
+        const decoys = []; let s = 0;
+        while(decoys.length < 3 && s < 50) {
+            s++; const raw = state.pool[Math.floor(Math.random() * state.pool.length)];
             const title = raw.title.replace(/\(.*\)/g, "").trim();
             const exists = title === target.title_clean || decoys.some(d => d.title_clean === title);
             if(raw.id !== target.id && !exists) decoys.push({ id: raw.id, title_clean: title });
         }
-
         state.currentTrack = target;
         const options = [{id:target.id, title_clean:target.title_clean}, ...decoys].sort(()=>0.5-Math.random());
         loader(false);
-
         els.gameCon.innerHTML = `
-            <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-                <div class="vinyl-wrap" style="margin-bottom:30px;">
-                    <div class="vinyl"><div class="vinyl-label" style="background:#333;"></div></div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                <div style="text-align:center; margin-bottom:20px;">
+                    <img src="${target.cover}" class="blur-img anim-unblur">
+                    <p style="margin-top:15px; font-size:0.9rem;">Hör zu & Schau hin...</p>
                 </div>
                 <div class="quiz-grid" style="width:100%;">
                     ${options.map(o => `<div class="quiz-option" onclick="checkQuiz(this, ${o.id===target.id})">${o.title_clean}</div>`).join('')}
                 </div>
             </div>`;
-        audioCtrl(true, target.preview);
-        state.startTime = Date.now();
+        audioCtrl(true, target.preview); state.startTime = Date.now();
     }
     function checkQuiz(el, correct) {
-        audioCtrl(false);
-        document.querySelector('.vinyl-label').style.backgroundImage = `url(${state.currentTrack.cover})`;
+        stopAudio();
+        document.querySelector('.blur-img').style.filter = 'blur(0px)'; // Sofort scharf
         if(correct) {
             const pts = Math.max(100, 1000 - Math.floor((Date.now()-state.startTime)/30));
             state.score += pts; updateStatus(); el.classList.add('correct'); showFloatingScore(pts);
-            setTimeout(nextQuiz, 1000);
+            setTimeout(nextQuiz, 1500);
         } else {
             el.classList.add('wrong');
-            setTimeout(() => endGame(false, `Final Score: ${state.score}`), 1000);
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                if(opt.innerText === state.currentTrack.title_clean) opt.classList.add('correct');
+            });
+            setTimeout(() => endGame(false, `Final Score: ${state.score}`), 2000);
         }
     }
 
@@ -534,8 +446,7 @@
         els.gameCon.innerHTML = `
             <div style="text-align:center; margin-top:20px;">
                 <div class="tl-item" style="justify-content:center; margin-bottom:30px;">
-                    <div class="tl-year">${state.currentTrack.year}</div>
-                    <div>${state.currentTrack.title_clean}</div>
+                    <div class="tl-year">${state.currentTrack.year}</div><div>${state.currentTrack.title_clean}</div>
                 </div>
                 <h3 style="margin:20px 0;">Ist der Song Älter oder Neuer?</h3>
                 <div class="vinyl-wrap" style="margin:0 auto 30px;"><div class="vinyl"><div class="vinyl-label" style="background:#333;"></div></div></div>
@@ -547,7 +458,7 @@
         audioCtrl(true, state.nextTrack.preview);
     }
     function checkHL(guess) {
-        audioCtrl(false);
+        stopAudio();
         const t = state.nextTrack.year; const c = state.currentTrack.year;
         const win = (guess === 'older' && t < c) || (guess === 'newer' && t > c) || t === c;
         if(win) { state.hlStreak++; state.currentTrack=state.nextTrack; alert(`Richtig! (${t})`); loader(true); nextHL(); }
@@ -562,8 +473,7 @@
         while(decoys.length < 3 && s < 50) {
             s++; const raw = state.pool[Math.floor(Math.random()*state.pool.length)];
             const title = raw.title.replace(/\(.*\)/g, "").trim();
-            if(raw.id !== target.id && !decoys.some(d=>d.title_clean === title) && title !== target.title_clean)
-                decoys.push({id:raw.id, title_clean:title});
+            if(raw.id !== target.id && !decoys.some(d=>d.title_clean === title) && title !== target.title_clean) decoys.push({id:raw.id, title_clean:title});
         }
         state.currentTrack = target; state.secLevel = 1;
         const opts = [{id:target.id, title_clean:target.title_clean}, ...decoys].sort(()=>0.5-Math.random());
@@ -589,34 +499,44 @@
         if(correct) {
             const pts = state.secLevel===1 ? 1000 : 500; state.score += pts; updateStatus();
             el.classList.add('correct'); showFloatingScore(pts); setTimeout(nextOneSec, 1500);
-        } else { el.classList.add('wrong'); setTimeout(() => endGame(false, `Score: ${state.score}`), 1500); }
+        } else {
+             el.classList.add('wrong');
+             document.querySelectorAll('.quiz-option').forEach(opt => { if(opt.innerText === state.currentTrack.title_clean) opt.classList.add('correct'); });
+             setTimeout(() => endGame(false, `Score: ${state.score}`), 2000);
+        }
     }
 
-    /* --- MODE: BLUR --- */
-    async function initBlur() { nextBlur(); }
-    async function nextBlur() {
-        loader(true); const target = await getValidSong();
+    /* --- MODE: REWIND --- */
+    async function initRewind() { nextRewind(); }
+    async function nextRewind() {
+        loader(true); const target = await getValidSong(); if(!target) return endGame(true, `Score: ${state.score}`);
         const decoys = []; let s=0;
         while(decoys.length < 3 && s < 50) {
             s++; const raw = state.pool[Math.floor(Math.random()*state.pool.length)];
-            const name = raw.artist.name;
-            if(raw.id !== target.id && !decoys.some(d=>d.name === name) && name !== target.artist.name)
-                decoys.push({id:raw.id, name:name});
+            const title = raw.title.replace(/\(.*\)/g, "").trim();
+            if(raw.id !== target.id && !decoys.some(d=>d.title_clean === title) && title !== target.title_clean) decoys.push({id:raw.id, title_clean:title});
         }
         state.currentTrack = target;
-        const opts = [{id:target.id, name:target.artist.name}, ...decoys].sort(()=>0.5-Math.random());
+        const opts = [{id:target.id, title_clean:target.title_clean}, ...decoys].sort(()=>0.5-Math.random());
         loader(false);
         els.gameCon.innerHTML = `
-            <img src="${target.cover}" class="blur-img anim-unblur">
-            <div class="quiz-grid" style="width:100%; margin-top:30px;">${opts.map(o=>`<div class="quiz-option" onclick="checkBlur(this, ${o.id===target.id})">${o.name}</div>`).join('')}</div>`;
-        audioCtrl(true, target.preview); state.startTime = Date.now();
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                <div class="vinyl-wrap" style="margin-bottom:20px;"><div class="vinyl"><div class="vinyl-label" style="background:#333;"></div></div></div>
+                <h3 style="color:#ff0099; margin-bottom:20px;">Rückwärts!</h3>
+                <div class="quiz-grid" style="width:100%;">${opts.map(o=>`<div class="quiz-option" onclick="checkRewind(this, ${o.id===target.id})">${o.title_clean}</div>`).join('')}</div>
+            </div>`;
+        playReverse(target.preview);
     }
-    function checkBlur(el, correct) {
-        audioCtrl(false); document.querySelector('.blur-img').style.filter = 'blur(0px)';
+    function checkRewind(el, correct) {
+        stopAudio();
+        document.querySelector('.vinyl-label').style.backgroundImage = `url(${state.currentTrack.cover})`;
         if(correct) {
-            const pts = Math.max(100, 1000 - Math.floor((Date.now()-state.startTime)/20));
-            state.score += pts; updateStatus(); el.classList.add('correct'); showFloatingScore(pts); setTimeout(nextBlur, 2000);
-        } else { el.classList.add('wrong'); setTimeout(() => endGame(false, `Score: ${state.score}`), 2000); }
+            state.score += 500; updateStatus(); el.classList.add('correct'); showFloatingScore(500); setTimeout(nextRewind, 2000);
+        } else {
+            el.classList.add('wrong');
+            document.querySelectorAll('.quiz-option').forEach(opt => { if(opt.innerText === state.currentTrack.title_clean) opt.classList.add('correct'); });
+            setTimeout(() => endGame(false, `Score: ${state.score}`), 2000);
+        }
     }
 
     /* --- MODE: DUEL --- */
@@ -638,7 +558,7 @@
         const p1 = parseInt(document.getElementById('p1-in').value);
         const p2 = parseInt(document.getElementById('p2-in').value);
         if(!p1 || !p2) return alert("Beide tippen!");
-        audioCtrl(false);
+        stopAudio();
         const real = state.currentTrack.year;
         document.querySelector('.vinyl-label').style.backgroundImage = `url(${state.currentTrack.cover})`;
         const d1 = Math.abs(real-p1); const d2 = Math.abs(real-p2);
@@ -654,7 +574,7 @@
         document.body.appendChild(el); setTimeout(()=>el.remove(), 1000);
     }
     function endGame(win, msg) {
-        audioCtrl(false);
+        stopAudio();
         document.getElementById('end-title').innerText = win ? "Sieg!" : "Game Over";
         document.getElementById('end-msg').innerText = msg;
         document.getElementById('overlay-end').classList.add('visible');
