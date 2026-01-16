@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hitster Clone - Deezer Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS DESIGN --- */
+        :root {
+            --bg-color: #121212;
+            --card-color: #1e1e1e;
+            --primary: #1db954; /* Spotify Green */
+            --text-main: #ffffff;
+            --text-sec: #b3b3b3;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 500px; /* Breite für Mobile/App-Feeling */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        h1 { font-size: 2.5rem; letter-spacing: -1px; }
+        .highlight { color: var(--primary); }
+        p { color: var(--text-sec); margin-top: 5px; }
+
+        /* Buttons & Inputs */
+        .btn-primary, .btn-secondary {
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.1s;
+            margin-top: 10px;
+        }
+
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-secondary { background-color: white; color: black; }
+        .btn-primary:active, .btn-secondary:active { transform: scale(0.98); }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            background: #333;
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        input:focus { outline: 2px solid var(--primary); }
+
+        /* Such-Bereich */
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        #playlist-search { margin-bottom: 0; text-align: left; }
+
+        #playlist-list {
+            width: 100%;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            background: #2a2a2a;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: left;
+        }
+
+        .playlist-item:hover { background: #333; }
+        .playlist-item img {
+            width: 50px; height: 50px;
+            border-radius: 4px; margin-right: 15px;
+        }
+        .playlist-info h4 { font-size: 1rem; margin-bottom: 3px; color: white; }
+        .playlist-info span { font-size: 0.8rem; color: #b3b3b3; }
+
+        /* Vinyl Animation */
+        .vinyl-wrapper {
+            margin: 20px auto;
+            width: 220px; height: 220px;
+            position: relative;
+        }
+
+        .vinyl {
+            width: 100%; height: 100%;
+            background: radial-gradient(#333, #000);
+            border-radius: 50%;
+            border: 2px solid #444;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: animation 0.5s;
+        }
+
+        .vinyl-center {
+            width: 80px; height: 80px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 5px solid #fff;
+        }
+
+        .spinning { animation: spin 3s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Controls */
+        .controls { margin-bottom: 20px; }
+        .btn-circle {
+            width: 70px; height: 70px;
+            border-radius: 50%;
+            border: none;
+            background: white; color: black;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Result Card */
+        .result-card img {
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .year-display { font-size: 3.5rem; font-weight: bold; display: block; margin: 10px 0; }
+
+        /* Utility */
+        .hidden { display: none !important; }
+        .icon-big { font-size: 4rem; margin-bottom: 20px; display: block; }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header>
+            <h1>Hit<span class="highlight">ster</span></h1>
+            <p>Erkennst du das Jahr?</p>
+        </header>
+
+        <main id="game-area">
+
+            <div id="start-screen">
+                <div class="icon-big">🎵</div>
+
+                <div class="search-container">
+                    <input type="text" id="playlist-search" placeholder="Suche (z.B. Disney, 80s, Rock)...">
+                    <button id="search-btn" class="btn-primary" style="width: auto;">🔍</button>
+                </div>
+
+                <p style="font-size: 0.9rem; margin: 10px 0;">Oder wähle eine Playlist:</p>
+
+                <div id="playlist-list">
+                    </div>
+            </div>
+
+            <div id="loader" class="hidden">
+                <div class="spinner"></div>
+                <p>Suche Plattenkiste durch...</p>
+            </div>
+
+            <div id="player-container" class="hidden">
+                <div class="vinyl-wrapper">
+                    <div class="vinyl" id="vinyl-disc">
+                        <div class="vinyl-center"></div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button id="play-pause-btn" class="btn-circle"><i class="fas fa-play"></i></button>
+                </div>
+
+                <audio id="audio-player"></audio>
+
+                <div class="input-group">
+                    <input type="number" id="year-input" placeholder="Jahr (z.B. 1984)" inputmode="numeric">
+                    <button id="guess-btn" class="btn-primary">Raten</button>
+                </div>
+                <button onclick="location.reload()" style="background:none; border:none; color:#666; margin-top:10px; cursor:pointer;">Zurück zum Menü</button>
+            </div>
+
+            <div id="result-container" class="hidden">
+                <div id="result-content"></div>
+                <button id="next-btn" class="btn-secondary">Nächster Song</button>
+                <button onclick="location.reload()" style="background:none; border:none; color:#666; margin-top:20px; cursor:pointer; text-decoration: underline;">Playlist wechseln</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT LOGIK --- */
+
+        // Konfiguration
+        const PROXY = 'https://api.allorigins.win/raw?url=';
+        let currentPlaylistId = null;
+
+        // Standard-Vorschläge
+        const DEFAULT_PLAYLISTS = [
+            { id: '3155776842', title: '100% Hits', img: 'https://e-cdns-images.dzcdn.net/images/playlist/89f6dfc009b0b43d2c0024440f340864/250x250-000000-80-0-0.jpg' },
+            { id: '1363560485', title: 'Best of 80s', img: 'https://e-cdns-images.dzcdn.net/images/playlist/73252538cb1235b2210a693c061d4b68/250x250-000000-80-0-0.jpg' },
+            { id: '1292055625', title: 'Best of 90s', img: 'https://e-cdns-images.dzcdn.net/images/playlist/4492476579b441f77d33b49e17b2f673/250x250-000000-80-0-0.jpg' },
+            { id: '1282495565', title: 'Best of 2000s', img: 'https://e-cdns-images.dzcdn.net/images/playlist/6959146dfa5390c9b0e27c7f3b890a2c/250x250-000000-80-0-0.jpg' }
+        ];
+
+        // DOM Elemente
+        const screens = {
+            start: document.getElementById('start-screen'),
+            loader: document.getElementById('loader'),
+            player: document.getElementById('player-container'),
+            result: document.getElementById('result-container')
+        };
+
+        const elements = {
+            audio: document.getElementById('audio-player'),
+            vinyl: document.getElementById('vinyl-disc'),
+            playBtn: document.getElementById('play-pause-btn'),
+            yearInput: document.getElementById('year-input'),
+            resultContent: document.getElementById('result-content'),
+            searchInput: document.getElementById('playlist-search'),
+            playlistList: document.getElementById('playlist-list'),
+            searchBtn: document.getElementById('search-btn'),
+            guessBtn: document.getElementById('guess-btn'),
+            nextBtn: document.getElementById('next-btn')
+        };
+
+        let currentTrack = null;
+        let isPlaying = false;
+
+        // --- EVENT LISTENERS ---
+        elements.searchBtn.addEventListener('click', performSearch);
+        elements.guessBtn.addEventListener('click', checkGuess);
+        elements.nextBtn.addEventListener('click', initGame);
+        elements.playBtn.addEventListener('click', toggleAudio);
+
+        // Enter Taste für Suche
+        elements.searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+
+        // Start: Zeige Default Playlists
+        renderPlaylists(DEFAULT_PLAYLISTS);
+
+        // --- FUNKTIONEN ---
+
+        async function performSearch() {
+            const query = elements.searchInput.value;
+            if (!query) return;
+
+            elements.playlistList.innerHTML = '<p style="color:#888;">Suche...</p>';
+
+            try {
+                const url = `https://api.deezer.com/search/playlist?q=${query}`;
+                const res = await fetch(PROXY + encodeURIComponent(url));
+                const data = await res.json();
+
+                const formattedResults = data.data.map(pl => ({
+                    id: pl.id,
+                    title: pl.title,
+                    img: pl.picture_medium,
+                    count: pl.nb_tracks
+                }));
+
+                renderPlaylists(formattedResults);
+            } catch (e) {
+                console.error(e);
+                elements.playlistList.innerHTML = '<p>Fehler bei der Suche (API Limit?).</p>';
+            }
+        }
+
+        function renderPlaylists(playlists) {
+            elements.playlistList.innerHTML = '';
+            if (playlists.length === 0) {
+                elements.playlistList.innerHTML = '<p>Nichts gefunden.</p>';
+                return;
+            }
+
+            playlists.forEach(pl => {
+                const div = document.createElement('div');
+                div.className = 'playlist-item';
+                div.innerHTML = `
+                    <img src="${pl.img}" alt="Cover">
+                    <div class="playlist-info">
+                        <h4>${pl.title}</h4>
+                        <span>${pl.count ? pl.count + ' Songs' : 'Playlist'}</span>
+                    </div>
+                `;
+                div.addEventListener('click', () => {
+                    currentPlaylistId = pl.id;
+                    initGame();
+                });
+                elements.playlistList.appendChild(div);
+            });
+        }
+
+        async function initGame() {
+            if (!currentPlaylistId) return;
+
+            showScreen('loader');
+            elements.yearInput.value = '';
+
+            try {
+                // 1. Hole Tracks
+                const plUrl = `https://api.deezer.com/playlist/${currentPlaylistId}/tracks?limit=100`;
+                const plRes = await fetch(PROXY + encodeURIComponent(plUrl));
+                const plData = await plRes.json();
+
+                if (!plData.data || plData.data.length === 0) throw new Error("Keine Tracks");
+
+                // 2. Wähle Track
+                let validTrackFound = false;
+                let attempts = 0;
+                let randomTrack;
+
+                // Versuche einen Track mit Preview zu finden
+                while (!validTrackFound && attempts < 10) {
+                    randomTrack = plData.data[Math.floor(Math.random() * plData.data.length)];
+                    if (randomTrack.preview) validTrackFound = true;
+                    attempts++;
+                }
+
+                if (!validTrackFound) throw new Error("Keine abspielbaren Songs gefunden");
+
+                // 3. Hole Album (Jahr)
+                const albUrl = `https://api.deezer.com/album/${randomTrack.album.id}`;
+                const albRes = await fetch(PROXY + encodeURIComponent(albUrl));
+                const albData = await albRes.json();
+
+                currentTrack = {
+                    title: randomTrack.title,
+                    artist: randomTrack.artist.name,
+                    preview: randomTrack.preview,
+                    cover: randomTrack.album.cover_medium,
+                    year: parseInt(albData.release_date.split('-')[0])
+                };
+
+                // Player bereitmachen
+                elements.audio.src = currentTrack.preview;
+                elements.audio.volume = 0.5;
+
+                showScreen('player');
+
+                // Reset UI
+                isPlaying = false;
+                elements.vinyl.classList.remove('spinning');
+                elements.playBtn.innerHTML = '<i class="fas fa-play"></i>';
+
+                // Autoplay starten
+                toggleAudio();
+
+            } catch (e) {
+                alert("Fehler: " + e.message);
+                showScreen('start');
+            }
+        }
+
+        function toggleAudio() {
+            if (isPlaying) {
+                elements.audio.pause();
+                elements.vinyl.classList.remove('spinning');
+                elements.playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            } else {
+                elements.audio.play();
+                elements.vinyl.classList.add('spinning');
+                elements.playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function checkGuess() {
+            const userYear = parseInt(elements.yearInput.value);
+            if (!userYear) return;
+
+            if(isPlaying) toggleAudio();
+
+            const diff = Math.abs(currentTrack.year - userYear);
+            let color = diff === 0 ? '#1db954' : (diff <= 3 ? '#ff9800' : '#f44336');
+            let text = diff === 0 ? 'PERFEKT!' : (diff <= 3 ? 'Knapp daneben!' : 'Leider falsch.');
+
+            const html = `
+                <div class="result-card">
+                    <h2 style="color:${color}">${text}</h2>
+                    <img src="${currentTrack.cover}" width="200">
+                    <h3>${currentTrack.title}</h3>
+                    <p>${currentTrack.artist}</p>
+                    <span class="year-display" style="color:${color}">${currentTrack.year}</span>
+                    <p style="color:#aaa">Dein Tipp: ${userYear}</p>
+                </div>
+            `;
+
+            elements.resultContent.innerHTML = html;
+            showScreen('result');
+        }
+
+        function showScreen(screenName) {
+            Object.values(screens).forEach(el => el.classList.add('hidden'));
+            screens[screenName].classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
