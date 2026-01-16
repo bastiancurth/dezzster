@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Deezster 2.0</title>
+    <title>Deezster 2.2 - Highscore Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- CSS DESIGN (Bopster Style) --- */
+        /* --- CSS DESIGN --- */
         :root {
             --primary: #23a6d5;
             --secondary: #e73c7e;
@@ -24,10 +24,7 @@
             animation: gradientBG 15s ease infinite;
             color: white;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
+            display: flex; justify-content: center; align-items: center; padding: 10px;
         }
 
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -45,7 +42,7 @@
         h3 { margin-bottom: 15px; opacity: 0.9; }
 
         /* Inputs & Buttons */
-        input, select {
+        input {
             width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.3);
             background: rgba(0,0,0,0.2); color: white; font-size: 1rem; margin-bottom: 10px; outline: none; text-align: center;
         }
@@ -57,8 +54,8 @@
         .btn-primary { background: rgba(255, 255, 255, 0.25); color: white; }
         .btn-primary:hover { background: rgba(255, 255, 255, 0.4); transform: translateY(-2px); }
         .btn-secondary { background: rgba(0, 0, 0, 0.3); color: white; }
-        .btn-danger { background: rgba(231, 76, 60, 0.6); color: white; }
-        .btn-success { background: rgba(46, 204, 113, 0.6); color: white; }
+        .btn-danger { background: rgba(231, 76, 60, 0.8) !important; color: white; border-color: red !important; }
+        .btn-success { background: rgba(46, 204, 113, 0.8) !important; color: white; border-color: green !important; }
 
         /* Playlist List */
         #playlist-list { max-height: 200px; overflow-y: auto; margin-top: 10px; }
@@ -71,13 +68,8 @@
         .playlist-info h4 { font-size: 0.9rem; margin: 0; }
         .playlist-info span { font-size: 0.7rem; opacity: 0.7; }
 
-        /* Game Elements */
-        .game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .lives { color: #ff6b6b; font-size: 1.2rem; }
-        .score-display { font-weight: bold; }
-
-        /* Vinyl Player (Small) */
-        .vinyl-wrapper-sm { width: 120px; height: 120px; margin: 10px auto; position: relative; }
+        /* Vinyl */
+        .vinyl-wrapper-sm { width: 100px; height: 100px; margin: 10px auto; position: relative; }
         .vinyl {
             width: 100%; height: 100%; background: radial-gradient(#333, #111);
             border-radius: 50%; border: 2px solid #111; display: flex; align-items: center; justify-content: center;
@@ -87,216 +79,190 @@
         .spinning { animation: spin 4s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* MULTIPLE CHOICE GRID */
-        .mc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .mc-btn { height: 80px; font-size: 0.9rem; white-space: normal; line-height: 1.2; }
+        /* TIMER BAR (NEU) */
+        .timer-container {
+            width: 100%; height: 8px; background: rgba(255,255,255,0.2);
+            border-radius: 4px; margin: 10px 0; overflow: hidden;
+        }
+        .timer-bar {
+            height: 100%; width: 100%; background: #2ecc71;
+            transform-origin: left;
+        }
+        .animate-timer { animation: shrink 30s linear forwards; }
+        @keyframes shrink {
+            0% { transform: scaleX(1); background: #2ecc71; }
+            50% { background: #f1c40f; }
+            100% { transform: scaleX(0); background: #e74c3c; }
+        }
 
-        /* TIMELINE CONTAINER */
+        /* Timeline Specific */
         .timeline-container {
-            display: flex; flex-direction: column; gap: 10px;
-            overflow-y: auto; max-height: 50vh; padding: 10px;
+            display: flex; flex-direction: column; gap: 10px; overflow-y: auto; max-height: 50vh; padding: 10px;
             background: rgba(0,0,0,0.1); border-radius: 12px;
         }
         .timeline-card {
             background: white; color: black; padding: 10px; border-radius: 8px;
-            display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        .timeline-year { font-weight: 800; font-size: 1.2rem; color: var(--primary); min-width: 50px; }
-        .timeline-info { text-align: left; flex-grow: 1; font-size: 0.85rem; }
         .insert-btn {
             background: rgba(255,255,255,0.2); border: 2px dashed rgba(255,255,255,0.4);
             color: white; padding: 8px; border-radius: 8px; cursor: pointer; font-size: 0.8rem;
-            transition: all 0.2s;
         }
-        .insert-btn:hover { background: rgba(255,255,255,0.4); color: black; border-style: solid; }
+
+        /* MC Grid */
+        .mc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .mc-btn { height: 70px; font-size: 0.85rem; white-space: normal; line-height: 1.2; padding: 5px; }
 
         /* Utility */
         .hidden { display: none !important; }
         .modal-overlay {
-            position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.8);
-            display: flex; align-items: center; justify-content: center; z-index: 10;
-            backdrop-filter: blur(5px);
+            position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.9);
+            display: flex; align-items: center; justify-content: center; z-index: 20; flex-direction: column;
         }
         .spinner {
             border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid #fff;
             border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto;
         }
+        .score-change {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 3rem; font-weight: bold; color: #2ecc71; text-shadow: 0 0 20px black;
+            animation: floatUp 1s forwards; pointer-events: none;
+        }
+        @keyframes floatUp { to { transform: translate(-50%, -150%); opacity: 0; } }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-
-        <header>
-            <h1>Deez<span>ster</span></h1>
-        </header>
+        <header><h1>Deez<span>ster</span></h1></header>
 
         <div id="screen-search">
-            <p>Wähle eine Playlist:</p>
-            <input type="text" id="search-input" placeholder="Suche (z.B. 80s, Rock, Disney)...">
+            <p>Playlist wählen:</p>
+            <input type="text" id="search-input" placeholder="Suche (z.B. 90s, Rock)...">
             <button id="search-btn" class="btn btn-primary">Suchen</button>
-
             <div id="playlist-list">
                 <div class="playlist-item" onclick="selectPlaylist('3155776842', '100% Hits')">
                     <img src="https://e-cdns-images.dzcdn.net/images/playlist/89f6dfc009b0b43d2c0024440f340864/250x250-000000-80-0-0.jpg">
-                    <div class="playlist-info"><h4>100% Hits</h4><span>Charts</span></div>
-                </div>
-                <div class="playlist-item" onclick="selectPlaylist('1363560485', 'Best of 80s')">
-                    <img src="https://e-cdns-images.dzcdn.net/images/playlist/73252538cb1235b2210a693c061d4b68/250x250-000000-80-0-0.jpg">
-                    <div class="playlist-info"><h4>Best of 80s</h4><span>Klassiker</span></div>
+                    <div class="playlist-info"><h4>100% Hits</h4><span>Mix</span></div>
                 </div>
             </div>
         </div>
 
         <div id="screen-mode" class="hidden">
-            <h3 id="selected-playlist-name">Playlist Name</h3>
-            <p>Wähle deinen Spielmodus:</p>
+            <h3 id="selected-playlist-name">Playlist</h3>
+            <div style="display: grid; gap: 15px;">
+                <button class="btn btn-primary" onclick="setupGame('mc')" style="height: 80px; font-size: 1.2rem;">
+                    <i class="fas fa-bolt"></i> Highscore Jagd<br><span style="font-size:0.8rem; font-weight:normal; display:block; margin-top:5px;">Quiz: Ein Fehler = Game Over!</span>
+                </button>
+                <button class="btn btn-primary" onclick="setupGame('timeline')" style="height: 80px; font-size: 1.2rem;">
+                    <i class="fas fa-stream"></i> Timeline<br><span style="font-size:0.8rem; font-weight:normal; display:block; margin-top:5px;">Ordne die Jahre (3 Leben)</span>
+                </button>
+            </div>
 
-            <button class="btn btn-primary" onclick="setupGame('mc')">
-                <i class="fas fa-list-ul"></i> Quiz (4 Auswahl)
-            </button>
-
-            <button class="btn btn-primary" onclick="setupGame('timeline')">
-                <i class="fas fa-stream"></i> Timeline (Ordnen)
-            </button>
-
-            <div id="timeline-settings" class="hidden" style="margin-top:15px; border-top:1px solid rgba(255,255,255,0.2); padding-top:15px;">
-                <p>Wie viele Karten zum Sieg?</p>
+            <div id="timeline-settings" class="hidden" style="margin-top:20px; border-top:1px solid rgba(255,255,255,0.2); padding-top:10px;">
+                <p>Karten zum Sieg:</p>
                 <div style="display:flex; gap:10px;">
                     <button class="btn btn-secondary" onclick="startTimeline(10)">10</button>
                     <button class="btn btn-secondary" onclick="startTimeline(15)">15</button>
-                    <button class="btn btn-secondary" onclick="startTimeline(20)">20</button>
                 </div>
             </div>
-
             <button class="btn btn-secondary" onclick="showScreen('screen-search')" style="margin-top:20px;">Zurück</button>
         </div>
 
         <div id="screen-game-timeline" class="hidden">
-            <div class="game-header">
-                <div class="score-display">Ziel: <span id="tl-target">10</span></div>
-                <div class="lives" id="tl-lives">❤️❤️❤️</div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <div>Ziel: <span id="tl-target">10</span></div>
+                <div id="tl-lives">❤️❤️❤️</div>
             </div>
-
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px; background:rgba(0,0,0,0.2); padding:10px; border-radius:12px;">
-                <div class="vinyl-wrapper-sm" style="width:50px; height:50px; margin:0;">
-                    <div class="vinyl" id="tl-vinyl"><div class="vinyl-label"></div></div>
-                </div>
-                <div style="flex-grow:1; text-align:left;">
-                    <span style="font-size:0.8rem; display:block; color:#aaa;">Aktueller Song</span>
-                    <strong style="display:block;">Hör mal rein...</strong>
-                </div>
-                <button id="tl-play-btn" class="btn btn-primary" style="width:auto; padding:8px 15px;"><i class="fas fa-play"></i></button>
+            <div style="display:flex; align-items:center; gap:10px; background:rgba(0,0,0,0.2); padding:10px; border-radius:12px; margin-bottom:10px;">
+                <div class="vinyl-wrapper-sm" style="width:50px; height:50px; margin:0;"><div class="vinyl" id="tl-vinyl"><div class="vinyl-label"></div></div></div>
+                <button id="tl-play-btn" class="btn btn-primary" style="flex-grow:1;"><i class="fas fa-play"></i> Abspielen</button>
             </div>
-
-            <p style="font-size:0.9rem; margin-bottom:10px;">Wo passt dieser Song hin?</p>
-
-            <div id="timeline-area" class="timeline-container">
-                </div>
+            <div id="timeline-area" class="timeline-container"></div>
         </div>
 
         <div id="screen-game-mc" class="hidden">
-            <div class="game-header">
-                <div class="score-display">Punkte: <span id="mc-score">0</span></div>
-                <button class="btn btn-secondary" style="width:auto; font-size:0.8rem;" onclick="location.reload()">X</button>
+            <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 5px;">
+                Score: <span id="mc-score" style="color:var(--primary)">0</span>
+            </div>
+
+            <div class="timer-container">
+                <div id="timer-bar" class="timer-bar"></div>
             </div>
 
             <div class="vinyl-wrapper-sm">
                 <div class="vinyl" id="mc-vinyl"><div class="vinyl-label"></div></div>
             </div>
 
-            <button id="mc-play-btn" class="btn btn-primary" style="width:50%; margin: 10px auto;"><i class="fas fa-play"></i> Abspielen</button>
-
-            <p>Welcher Song ist das?</p>
-
-            <div id="mc-options" class="mc-grid">
-                </div>
+            <button id="mc-play-btn" class="btn btn-primary" style="width:50%; margin: 5px auto;"><i class="fas fa-play"></i> Play</button>
+            <p>Welcher Song läuft?</p>
+            <div id="mc-options" class="mc-grid"></div>
         </div>
 
         <div id="loader" class="hidden modal-overlay">
-            <div style="text-align: center;">
-                <div class="spinner"></div>
-                <p style="margin-top:10px;">Lade Musik...</p>
-            </div>
+            <div class="spinner"></div><p style="margin-top:10px;">Lade...</p>
         </div>
 
         <div id="game-over" class="hidden modal-overlay">
-            <div class="app-container" style="max-height:auto;">
-                <h2 id="go-title">Gewonnen!</h2>
-                <p id="go-msg" style="margin:20px 0;">Du hast alle Karten sortiert.</p>
-                <button class="btn btn-primary" onclick="location.reload()">Neues Spiel</button>
-            </div>
+            <h1 id="go-title">Game Over</h1>
+            <p id="go-msg" style="font-size:1.2rem; margin:20px 0; max-width:80%;">Punkte</p>
+            <button class="btn btn-primary" onclick="location.reload()">Neues Spiel</button>
         </div>
 
         <audio id="audio-player"></audio>
-
     </div>
 
     <script>
-        /* --- LOGIK & STATE --- */
-
-        const PROXY = 'https://api.allorigins.win/raw?url='; // Fallback
-
+        /* --- CORE LOGIC --- */
         let state = {
             playlistId: null,
-            tracks: [],      // Alle Songs der Playlist
-            pool: [],        // Noch verfügbare Songs
-            currentTrack: null, // Der Song der gerade läuft
+            tracks: [],
+            pool: [],
+            currentTrack: null,
             isPlaying: false,
-
-            // Timeline spezifisch
-            timeline: [],    // Array der platzierten Songs: {title, artist, year, img}
+            timeline: [],
             lives: 3,
             targetScore: 10,
-
-            // MC spezifisch
-            score: 0
+            score: 0,
+            startTime: 0 // Für Highscore Berechnung
         };
 
         const els = {
             audio: document.getElementById('audio-player'),
-            tlArea: document.getElementById('timeline-area'),
-            mcOptions: document.getElementById('mc-options')
+            mcOptions: document.getElementById('mc-options'),
+            timerBar: document.getElementById('timer-bar')
         };
 
-        // --- NAVIGATION ---
-        function showScreen(id) {
-            document.querySelectorAll('.app-container > div').forEach(el => {
-                if(el.id !== 'loader' && el.id !== 'game-over') el.classList.add('hidden');
-            });
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        function toggleLoader(show) {
-            document.getElementById('loader').classList.toggle('hidden', !show);
-        }
-
-        // --- 1. PLAYLIST HANDLING (Deezer JSONP) ---
+        // --- DEEZER API HELPER ---
         function fetchDeezer(url) {
             return new Promise((resolve, reject) => {
                 const script = document.createElement('script');
-                const cbName = 'dz_' + Math.round(Math.random() * 1000000);
-                window[cbName] = (data) => { delete window[cbName]; document.body.removeChild(script); resolve(data); };
-                script.src = url + (url.includes('?') ? '&' : '?') + 'output=jsonp&callback=' + cbName;
-                script.onerror = () => { delete window[cbName]; document.body.removeChild(script); reject(); };
+                const cb = 'dz_' + Math.round(Math.random() * 1000000);
+                window[cb] = (d) => { delete window[cb]; document.body.removeChild(script); resolve(d); };
+                script.src = url + (url.includes('?') ? '&' : '?') + 'output=jsonp&callback=' + cb;
+                script.onerror = () => reject();
                 document.body.appendChild(script);
             });
         }
 
-        async function searchPlaylists() {
-            const query = document.getElementById('search-input').value;
-            if(!query) return;
-            document.getElementById('playlist-list').innerHTML = '<p>Suche...</p>';
+        // --- NAVIGATION & SEARCH ---
+        function showScreen(id) {
+            document.querySelectorAll('.app-container > div').forEach(el => {
+                if(!['loader', 'game-over'].includes(el.id)) el.classList.add('hidden');
+            });
+            document.getElementById(id).classList.remove('hidden');
+        }
 
+        async function searchPlaylists() {
+            const q = document.getElementById('search-input').value;
+            if(!q) return;
+            document.getElementById('playlist-list').innerHTML = 'Suche...';
             try {
-                const data = await fetchDeezer(`https://api.deezer.com/search/playlist?q=${encodeURIComponent(query)}`);
-                const html = data.data.map(p => `
-                    <div class="playlist-item" onclick="selectPlaylist('${p.id}', '${p.title.replace(/'/g, "")}')">
-                        <img src="${p.picture_medium}">
-                        <div class="playlist-info"><h4>${p.title}</h4><span>${p.nb_tracks} Songs</span></div>
-                    </div>
-                `).join('');
+                const d = await fetchDeezer(`https://api.deezer.com/search/playlist?q=${encodeURIComponent(q)}`);
+                const html = d.data.map(p => `
+                    <div class="playlist-item" onclick="selectPlaylist('${p.id}', '${p.title.replace(/'/g,"")}')">
+                        <img src="${p.picture_medium}"><div class="playlist-info"><h4>${p.title}</h4><span>${p.nb_tracks} Songs</span></div>
+                    </div>`).join('');
                 document.getElementById('playlist-list').innerHTML = html;
             } catch(e) { document.getElementById('playlist-list').innerHTML = 'Fehler.'; }
         }
@@ -305,206 +271,159 @@
         async function selectPlaylist(id, name) {
             state.playlistId = id;
             document.getElementById('selected-playlist-name').innerText = name;
-
-            toggleLoader(true);
+            document.getElementById('loader').classList.remove('hidden');
             try {
-                // Hole bis zu 300 Songs für genug Futter
-                const data = await fetchDeezer(`https://api.deezer.com/playlist/${id}/tracks?limit=300`);
-                // Filtern: Nur Songs mit Preview und Album-ID
-                state.tracks = data.data.filter(t => t.preview && t.album && t.album.id);
-
-                if(state.tracks.length < 10) throw new Error("Zu wenige Songs in dieser Playlist.");
-
-                // Shuffle Pool
+                const d = await fetchDeezer(`https://api.deezer.com/playlist/${id}/tracks?limit=400`);
+                state.tracks = d.data.filter(t => t.preview && t.album);
+                if(state.tracks.length < 10) throw new Error("Playlist zu klein");
                 state.pool = [...state.tracks].sort(() => 0.5 - Math.random());
-
-                toggleLoader(false);
+                document.getElementById('loader').classList.add('hidden');
                 showScreen('screen-mode');
             } catch(e) {
-                toggleLoader(false);
-                alert("Konnte Playlist nicht laden: " + e.message);
+                document.getElementById('loader').classList.add('hidden');
+                alert(e.message);
             }
         }
 
-        // --- 2. GAME SETUP ---
         function setupGame(mode) {
-            if(mode === 'timeline') {
-                document.getElementById('timeline-settings').classList.remove('hidden');
-            } else {
-                startMC();
-            }
+            if(mode === 'timeline') document.getElementById('timeline-settings').classList.remove('hidden');
+            else startMC();
         }
 
-        // --- AUDIO ENGINE ---
-        function playTrack(previewUrl, vinylId, btnId) {
-            if(state.isPlaying && els.audio.src === previewUrl) {
+        // --- AUDIO ---
+        function playTrack(url, vinylId, btnId) {
+            if(state.isPlaying && els.audio.src === url) {
                 els.audio.pause();
                 state.isPlaying = false;
-                document.getElementById(vinylId).classList.remove('spinning');
-                document.getElementById(btnId).innerHTML = '<i class="fas fa-play"></i>';
-                return;
+                if(vinylId) document.getElementById(vinylId).classList.remove('spinning');
+                if(btnId) document.getElementById(btnId).innerHTML = '<i class="fas fa-play"></i> Abspielen';
+            } else {
+                els.audio.src = url;
+                els.audio.play();
+                state.isPlaying = true;
+                if(vinylId) document.getElementById(vinylId).classList.add('spinning');
+                if(btnId) document.getElementById(btnId).innerHTML = '<i class="fas fa-pause"></i> Pause';
             }
-
-            els.audio.src = previewUrl;
-            els.audio.play();
-            state.isPlaying = true;
-            document.getElementById(vinylId).classList.add('spinning');
-            document.getElementById(btnId).innerHTML = '<i class="fas fa-pause"></i>';
-
-            // Auto-Stop
             els.audio.onended = () => {
                 state.isPlaying = false;
-                document.getElementById(vinylId).classList.remove('spinning');
-                document.getElementById(btnId).innerHTML = '<i class="fas fa-play"></i>';
+                if(vinylId) document.getElementById(vinylId).classList.remove('spinning');
+                if(btnId) document.getElementById(btnId).innerHTML = '<i class="fas fa-play"></i> Abspielen';
             };
         }
-
         function stopAudio() {
             els.audio.pause();
             state.isPlaying = false;
             document.querySelectorAll('.vinyl').forEach(v => v.classList.remove('spinning'));
-            document.querySelectorAll('.btn-primary').forEach(b => {
-                if(b.innerHTML.includes('fa-pause')) b.innerHTML = '<i class="fas fa-play"></i>';
-            });
         }
 
-        // --- 3. TIMELINE MODE ---
+        // --- SMART YEAR CHECK ---
+        function getYearFromISRC(isrc) {
+            if (!isrc || isrc.length < 7) return null;
+            const yy = parseInt(isrc.substring(5, 7));
+            if (isNaN(yy)) return null;
+            return (yy > (new Date().getFullYear() % 100) + 1) ? 1900 + yy : 2000 + yy;
+        }
+
+        async function getSongDetails(track) {
+            try {
+                const albPromise = fetchDeezer(`https://api.deezer.com/album/${track.album.id}`);
+                const trackPromise = track.isrc ? Promise.resolve(track) : fetchDeezer(`https://api.deezer.com/track/${track.id}`);
+                const [alb, tDetails] = await Promise.all([albPromise, trackPromise]);
+
+                const albYear = parseInt(alb.release_date.split('-')[0]);
+                const isrcYear = getYearFromISRC(tDetails.isrc);
+
+                let finalYear = albYear;
+                if(isrcYear && isrcYear < albYear && isrcYear > 1900) finalYear = isrcYear;
+
+                return { ...track, year: finalYear, cover: track.album.cover_medium };
+            } catch(e) { return { ...track, year: 2000, cover: '' }; }
+        }
+
+        /* =========================================
+           TIMELINE GAME (Standard)
+           ========================================= */
         async function startTimeline(target) {
             state.targetScore = target;
             state.lives = 3;
             state.timeline = [];
-            updateLivesUI();
+            updateLives();
             document.getElementById('tl-target').innerText = target;
 
-            toggleLoader(true);
-            // 1. Startkarte holen und platzieren
-            const startSong = await getSongDetails(state.pool.pop());
-            state.timeline.push(startSong);
-
-            // 2. Nächsten Song zum Raten vorbereiten
+            document.getElementById('loader').classList.remove('hidden');
+            const start = await getSongDetails(state.pool.pop());
+            state.timeline.push(start);
             await nextTimelineRound();
-            toggleLoader(false);
+            document.getElementById('loader').classList.add('hidden');
             showScreen('screen-game-timeline');
             renderTimeline();
         }
 
         async function nextTimelineRound() {
-            if(state.pool.length === 0) { endGame(true, "Keine Songs mehr!"); return; }
-            const rawTrack = state.pool.pop();
-            const song = await getSongDetails(rawTrack);
-            state.currentTrack = song;
-
-            // UI Reset
-            document.querySelector('#tl-vinyl .vinyl-label').style.backgroundImage = `url(${song.cover})`;
-            document.getElementById('tl-play-btn').onclick = () => playTrack(song.preview, 'tl-vinyl', 'tl-play-btn');
-
-            // Autoplay optional
-            playTrack(song.preview, 'tl-vinyl', 'tl-play-btn');
-        }
-
-        async function getSongDetails(track) {
-            // Jahr holen via Album Details (Deezer Track hat oft kein Release Date)
-            try {
-                const alb = await fetchDeezer(`https://api.deezer.com/album/${track.album.id}`);
-                return {
-                    id: track.id,
-                    title: track.title,
-                    artist: track.artist.name,
-                    year: parseInt(alb.release_date.split('-')[0]),
-                    cover: track.album.cover_medium,
-                    preview: track.preview
-                };
-            } catch(e) {
-                // Fallback wenn API failt
-                return { ...track, year: 2000, cover: '', preview: '' };
-            }
+            if(state.pool.length === 0) return endGame(true, "Playlist leer!");
+            state.currentTrack = await getSongDetails(state.pool.pop());
+            document.querySelector('#tl-vinyl .vinyl-label').style.backgroundImage = `url(${state.currentTrack.cover})`;
+            document.getElementById('tl-play-btn').onclick = () => playTrack(state.currentTrack.preview, 'tl-vinyl', 'tl-play-btn');
+            playTrack(state.currentTrack.preview, 'tl-vinyl', 'tl-play-btn');
         }
 
         function renderTimeline() {
-            const container = els.tlArea;
-            container.innerHTML = '';
-
-            // Button GANZ OBEN (Vor dem ersten Song)
-            container.appendChild(createInsertBtn(0));
-
-            state.timeline.forEach((song, index) => {
-                // Die Karte
-                const card = document.createElement('div');
-                card.className = 'timeline-card';
-                card.innerHTML = `
-                    <div class="timeline-year">${song.year}</div>
-                    <img src="${song.cover}" style="width:40px; height:40px; border-radius:4px;">
-                    <div class="timeline-info">
-                        <strong>${song.title}</strong><br>${song.artist}
-                    </div>
-                `;
-                container.appendChild(card);
-
-                // Button DANACH
-                container.appendChild(createInsertBtn(index + 1));
+            const area = document.getElementById('timeline-area');
+            area.innerHTML = '';
+            area.appendChild(createInsertBtn(0));
+            state.timeline.forEach((s, i) => {
+                area.innerHTML += `
+                    <div class="timeline-card">
+                        <div style="font-weight:800; color:var(--primary); font-size:1.2rem;">${s.year}</div>
+                        <img src="${s.cover}" style="width:40px; height:40px; border-radius:4px;">
+                        <div style="text-align:left; font-size:0.8rem; flex-grow:1;">
+                            <strong>${s.title}</strong><br>${s.artist.name}
+                        </div>
+                    </div>`;
+                area.appendChild(createInsertBtn(i + 1));
             });
         }
 
-        function createInsertBtn(index) {
-            const btn = document.createElement('div');
-            btn.className = 'insert-btn';
-            btn.innerHTML = '<i class="fas fa-plus"></i> Hier einfügen';
-            btn.onclick = () => checkTimelinePlacement(index);
-            return btn;
+        function createInsertBtn(i) {
+            const d = document.createElement('div');
+            d.className = 'insert-btn';
+            d.innerHTML = '<i class="fas fa-plus"></i> Hier';
+            d.onclick = () => checkTimeline(i);
+            return d;
         }
 
-        function checkTimelinePlacement(index) {
+        function checkTimeline(i) {
             stopAudio();
-            const currentYear = state.currentTrack.year;
+            const y = state.currentTrack.year;
+            const prev = state.timeline[i-1];
+            const next = state.timeline[i];
 
-            // Logik:
-            // Index 0: muss <= erster Song sein
-            // Index Max: muss >= letzter Song sein
-            // Index X: muss >= Song[X-1] UND <= Song[X] sein
-
-            let valid = true;
-            const prevSong = state.timeline[index - 1];
-            const nextSong = state.timeline[index];
-
-            if(prevSong && currentYear < prevSong.year) valid = false;
-            if(nextSong && currentYear > nextSong.year) valid = false;
-
-            if(valid) {
-                // Richtig!
-                state.timeline.splice(index, 0, state.currentTrack);
-                // Gewinn Check
-                if(state.timeline.length >= state.targetScore) {
-                    endGame(true, `Du hast ${state.targetScore} Songs korrekt sortiert!`);
-                } else {
-                    renderTimeline();
-                    alert(`Korrekt! (${state.currentTrack.year})`);
-                    toggleLoader(true);
-                    nextTimelineRound().then(() => toggleLoader(false));
+            if((prev && y < prev.year) || (next && y > next.year)) {
+                state.lives--;
+                updateLives();
+                alert(`Falsch! (${state.currentTrack.year})`);
+                if(state.lives <= 0) endGame(false, "Keine Leben mehr.");
+                else {
+                    document.getElementById('loader').classList.remove('hidden');
+                    nextTimelineRound().then(() => document.getElementById('loader').classList.add('hidden'));
                 }
             } else {
-                // Falsch!
-                state.lives--;
-                updateLivesUI();
-                alert(`Falsch! Es war ${state.currentTrack.year}.`);
-
-                if(state.lives <= 0) {
-                    endGame(false, "Du hast keine Leben mehr.");
-                } else {
-                    // Song wird weggeworfen, neuer Song
-                    toggleLoader(true);
-                    nextTimelineRound().then(() => toggleLoader(false));
+                state.timeline.splice(i, 0, state.currentTrack);
+                if(state.timeline.length >= state.targetScore) endGame(true, "Ziel erreicht!");
+                else {
+                    renderTimeline();
+                    document.getElementById('loader').classList.remove('hidden');
+                    nextTimelineRound().then(() => document.getElementById('loader').classList.add('hidden'));
                 }
             }
         }
-
-        function updateLivesUI() {
-            let hearts = "";
-            for(let i=0; i<state.lives; i++) hearts += "❤️";
-            for(let i=state.lives; i<3; i++) hearts += "🖤";
-            document.getElementById('tl-lives').innerHTML = hearts;
+        function updateLives() {
+            document.getElementById('tl-lives').innerText = "❤️".repeat(state.lives) + "🖤".repeat(3-state.lives);
         }
 
-        // --- 4. MULTIPLE CHOICE MODE ---
+        /* =========================================
+           QUIZ HIGHSCORE GAME (NEU)
+           ========================================= */
         function startMC() {
             state.score = 0;
             document.getElementById('mc-score').innerText = 0;
@@ -513,78 +432,101 @@
         }
 
         async function nextMCRound() {
-            if(state.pool.length < 4) { endGame(true, "Playlist zu Ende!"); return; }
+            if(state.pool.length < 4) return endGame(true, `Playlist leer! Score: ${state.score}`);
 
-            // 1 Target, 3 Decoys
-            const targetRaw = state.pool.pop();
+            // 1. Setup Data
+            const target = state.pool.pop();
             const decoys = [];
             while(decoys.length < 3) {
                 const d = state.pool[Math.floor(Math.random() * state.pool.length)];
-                if(d.id !== targetRaw.id && !decoys.includes(d)) decoys.push(d);
+                if(d.id !== target.id && !decoys.includes(d)) decoys.push(d);
             }
+            state.currentTrack = { ...target, cover: target.album.cover_medium };
 
-            state.currentTrack = {
-                title: targetRaw.title,
-                artist: targetRaw.artist.name,
-                preview: targetRaw.preview,
-                cover: targetRaw.album.cover_medium
-            };
-
-            // Player Setup
+            // 2. Setup Player
             stopAudio();
-            document.querySelector('#mc-vinyl .vinyl-label').style.backgroundImage = `url(${state.currentTrack.cover})`; // Zeige Cover schon? Hitster zeigt es nicht.
-            // In MC ist es ok das Cover zu zeigen, da Titel oft nicht drauf steht. Oder wir nutzen ein neutrales Bild.
-            // Besser: Neutrales Bild beim Raten.
-            document.querySelector('#mc-vinyl .vinyl-label').style.backgroundImage = 'none';
-            document.querySelector('#mc-vinyl .vinyl-label').style.backgroundColor = '#333';
+            const vLabel = document.querySelector('#mc-vinyl .vinyl-label');
+            vLabel.style.backgroundImage = 'none';
+            vLabel.style.backgroundColor = '#333';
 
             document.getElementById('mc-play-btn').onclick = () => playTrack(state.currentTrack.preview, 'mc-vinyl', 'mc-play-btn');
             playTrack(state.currentTrack.preview, 'mc-vinyl', 'mc-play-btn');
 
-            // Optionen bauen
-            const options = [targetRaw, ...decoys].sort(() => 0.5 - Math.random());
+            // 3. Render Buttons
+            const options = [target, ...decoys].sort(() => 0.5 - Math.random());
             els.mcOptions.innerHTML = '';
-
-            options.forEach(opt => {
+            options.forEach(o => {
                 const btn = document.createElement('button');
                 btn.className = 'btn btn-secondary mc-btn';
-                btn.innerText = opt.title; // Wir raten Titel
-                btn.onclick = () => checkMCGuess(btn, opt.id === targetRaw.id);
+                btn.innerText = o.title;
+                btn.onclick = () => checkMC(btn, o.id === target.id);
                 els.mcOptions.appendChild(btn);
             });
+
+            // 4. START TIMER
+            startTimer();
         }
 
-        function checkMCGuess(btn, isCorrect) {
+        function startTimer() {
+            // Reset Animation
+            els.timerBar.classList.remove('animate-timer');
+            void els.timerBar.offsetWidth; // Trigger Reflow
+            els.timerBar.classList.add('animate-timer');
+
+            state.startTime = Date.now();
+        }
+
+        function checkMC(btn, isCorrect) {
             stopAudio();
+            // Animation stoppen
+            els.timerBar.style.animationPlayState = 'paused';
+
             // Reveal Cover
             document.querySelector('#mc-vinyl .vinyl-label').style.backgroundImage = `url(${state.currentTrack.cover})`;
 
             if(isCorrect) {
-                btn.classList.remove('btn-secondary');
-                btn.classList.add('btn-success');
-                state.score++;
+                // PUNKTE BERECHNEN
+                const timeTaken = Date.now() - state.startTime;
+                // Max 30s. Formel: 1000 Pkt - Zeitstrafe. Min 100 Pkt.
+                // 30000ms. Strafe = ca. 30 Pkt pro Sekunde.
+                let points = Math.max(100, Math.floor(1000 - (timeTaken / 33)));
+
+                state.score += points;
                 document.getElementById('mc-score').innerText = state.score;
+
+                // Visual Feedback
+                btn.classList.replace('btn-secondary', 'btn-success');
+                showFloatingPoints(points);
+
                 setTimeout(nextMCRound, 1500);
             } else {
-                btn.classList.remove('btn-secondary');
-                btn.classList.add('btn-danger');
-                // Richtige anzeigen
+                // GAME OVER
+                btn.classList.replace('btn-secondary', 'btn-danger');
+
+                // Richtige Antwort zeigen
                 Array.from(els.mcOptions.children).forEach(b => {
                     if(b.innerText === state.currentTrack.title) b.classList.add('btn-success');
                 });
-                // Game Over bei MC? Oder einfach weitermachen? Machen wir Game Over bei Fehler für Highscore-Jagd.
-                setTimeout(() => endGame(false, `Falsch! Score: ${state.score}`), 2000);
+
+                setTimeout(() => endGame(false, `Falsch! Highscore: ${state.score}`), 2500);
             }
         }
 
-        // --- END GAME ---
+        function showFloatingPoints(pts) {
+            const el = document.createElement('div');
+            el.className = 'score-change';
+            el.innerText = `+${pts}`;
+            document.getElementById('screen-game-mc').appendChild(el);
+            setTimeout(() => el.remove(), 1000);
+        }
+
+        // --- GLOBAL END ---
         function endGame(win, msg) {
             stopAudio();
-            document.getElementById('go-title').innerText = win ? "Spiel vorbei!" : "Game Over";
+            document.getElementById('go-title').innerText = win ? "Sieg!" : "Game Over";
             document.getElementById('go-msg').innerText = msg;
             document.getElementById('game-over').classList.remove('hidden');
         }
-
     </script>
 </body>
 </html>
