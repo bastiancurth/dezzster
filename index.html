@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Deezster Ultimate</title>
+    <title>Deezster 4.1</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         /* --- 1. DESIGN VARIABLES --- */
         :root {
             --primary: #FF3CAC;
-            --secondary: #2B86C5;
-            --glass-bg: rgba(20, 20, 20, 0.65); /* Etwas dunkler für besseren Kontrast */
-            --glass-border: 1px solid rgba(255, 255, 255, 0.15);
+            --glass-bg: rgba(18, 18, 18, 0.85); /* Viel dunkler & undurchsichtiger für Kontrast */
+            --glass-border: 1px solid rgba(255, 255, 255, 0.3); /* Hellere Kante */
+            --glass-highlight: rgba(255, 255, 255, 0.15);
             --radius: 24px;
             --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --text-shadow: 0 2px 4px rgba(0,0,0,0.9); /* Starker Schatten für Lesbarkeit */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font); -webkit-tap-highlight-color: transparent; }
@@ -27,50 +28,50 @@
             height: 100vh; width: 100vw;
             display: flex; justify-content: center; align-items: center;
             overflow: hidden;
-            transition: background-image 0.5s;
+            color: #ffffff; /* Global White Text */
         }
 
-        /* Der normale Zustand (langsam) */
+        /* Animationen */
         body.idle { animation: moveGradient 20s ease infinite; }
-
-        /* Der Visualizer Zustand (schnell & pulsierend) */
         body.playing { animation: moveGradient 3s linear infinite; }
-        body.playing .app-frame { box-shadow: 0 0 80px rgba(255, 60, 172, 0.6); border-color: rgba(255,255,255,0.4); }
-
         @keyframes moveGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
         }
 
-        /* --- 3. RESPONSIVE CONTAINER --- */
+        /* --- 3. APP FRAME (Lesbarkeit optimiert) --- */
         .app-frame {
             width: 100%; height: 100%;
-            background: var(--glass-bg); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
             display: flex; flex-direction: column; position: relative;
-            transition: all 0.3s;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
 
-        /* Desktop Optimierung: Kein Handy-Rahmen, sondern schickes Fenster */
         @media (min-width: 768px) {
             .app-frame {
                 width: 90%; max-width: 1000px; height: 90%;
                 border-radius: var(--radius);
                 border: var(--glass-border);
-                box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             }
         }
 
-        /* --- 4. UI COMPONENTS --- */
+        /* --- 4. TYPOGRAPHY (High Contrast) --- */
+        h1, h2, h3, h4, p, div, span, button, input {
+            color: #ffffff !important;
+            text-shadow: var(--text-shadow);
+        }
+
+        /* --- 5. UI COMPONENTS --- */
 
         /* Header */
         header {
             padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0;
+            background: rgba(0,0,0,0.3);
         }
         .brand { font-size: 1.8rem; font-weight: 900; letter-spacing: -1px; }
-        .brand span { color: #5edfff; }
-        .status-pill { background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 50px; font-weight: bold; font-size: 0.9rem; }
+        .brand span { color: #5edfff !important; }
+        .status-pill { background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 50px; font-weight: bold; border: 1px solid rgba(255,255,255,0.3); }
 
         /* Screens */
         .screen {
@@ -85,91 +86,97 @@
 
         /* Buttons */
         .btn {
-            background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4);
             padding: 15px 25px; border-radius: 16px; font-size: 1rem; font-weight: 700;
             cursor: pointer; transition: all 0.1s; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-        .btn:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
+        .btn:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
         .btn:active { transform: scale(0.96); }
-        .btn-primary { background: white; color: black; border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-primary { background: #ffffff; color: #000000 !important; text-shadow: none; border: none; }
         .btn-large { width: 100%; padding: 20px; font-size: 1.1rem; margin-top: 10px; }
-        .btn-back { margin-top: 20px; width: 100%; background: rgba(0,0,0,0.4); }
+        .btn-back { margin-top: 20px; width: 100%; background: rgba(0,0,0,0.6); }
 
-        .btn-success { background: #2ecc71 !important; color: white !important; border-color: #27ae60 !important; }
-        .btn-danger { background: #e74c3c !important; color: white !important; border-color: #c0392b !important; }
+        .btn-success { background: #2ecc71 !important; border-color: #27ae60 !important; }
+        .btn-danger { background: #e74c3c !important; border-color: #c0392b !important; }
 
         /* Search */
         .search-container { display: flex; gap: 10px; margin-bottom: 20px; }
         input {
-            flex: 1; padding: 15px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(0,0,0,0.3); color: white; outline: none; font-size: 1rem;
+            flex: 1; padding: 15px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.5);
+            background: rgba(0,0,0,0.5); outline: none; font-size: 1rem;
         }
+        input::placeholder { color: rgba(255,255,255,0.7) !important; text-shadow: none; }
 
-        /* Playlist Cards */
+        /* Cards */
         .playlist-card {
-            display: flex; align-items: center; gap: 20px; background: rgba(255,255,255,0.05);
+            display: flex; align-items: center; gap: 20px; background: rgba(255,255,255,0.1);
             padding: 15px; border-radius: 16px; cursor: pointer; transition: background 0.2s;
-            margin-bottom: 10px; border: 1px solid transparent;
+            margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.2);
         }
-        .playlist-card:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.2); }
-        .playlist-img { width: 70px; height: 70px; border-radius: 12px; object-fit: cover; }
+        .playlist-card:hover { background: rgba(255,255,255,0.25); }
+        .playlist-img { width: 70px; height: 70px; border-radius: 12px; object-fit: cover; border: 1px solid rgba(255,255,255,0.3); }
 
-        /* Hero Section */
+        /* Hero */
         .hero {
-            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%);
+            background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%);
             padding: 30px; border-radius: 24px; text-align: center; margin-bottom: 30px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-        .hero img { width: 180px; height: 180px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .hero img { width: 180px; height: 180px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.2); }
 
-        /* Grid for Modes */
+        /* Grid */
         .grid-modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
         .mode-card {
-            background: rgba(255,255,255,0.08); padding: 20px; border-radius: 20px;
-            text-align: center; cursor: pointer; border: 1px solid transparent; transition: all 0.2s;
+            background: rgba(255,255,255,0.15); padding: 20px; border-radius: 20px;
+            text-align: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s;
             display: flex; flex-direction: column; align-items: center; justify-content: center; aspect-ratio: 1/1;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        .mode-card:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
+        .mode-card:hover { background: rgba(255,255,255,0.3); transform: scale(1.05); }
         .mode-card i { font-size: 2.5rem; margin-bottom: 10px; }
 
-        /* --- GAME UI --- */
-        .game-controls { display: flex; align-items: center; justify-content: center; gap: 20px; margin: 20px 0; }
-        .vinyl-wrap { width: 150px; height: 150px; position: relative; flex-shrink: 0; }
+        /* Vinyl */
+        .vinyl-wrap { width: 150px; height: 150px; position: relative; flex-shrink: 0; margin: 0 auto; }
         .vinyl {
             width: 100%; height: 100%; background: radial-gradient(#222, #000);
-            border-radius: 50%; border: 4px solid #111; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 50%; border: 4px solid #333; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
         }
-        .vinyl-label { width: 40%; height: 40%; background: var(--primary); border-radius: 50%; border: 2px solid white; background-size: cover; }
+        .vinyl-label { width: 40%; height: 40%; background: var(--primary); border-radius: 50%; border: 3px solid white; background-size: cover; }
         .spinning { animation: spin 4s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* Timeline Items */
         .timeline-list { display: flex; flex-direction: column; gap: 10px; padding-bottom: 40px; }
         .tl-item {
-            background: white; color: black; padding: 15px; border-radius: 12px;
+            background: #ffffff; padding: 15px; border-radius: 12px;
             display: flex; align-items: center; gap: 15px; font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .tl-year { font-size: 1.4rem; color: var(--primary); font-weight: 900; }
+        .tl-item * { color: #000000 !important; text-shadow: none !important; }
+        .tl-year { font-size: 1.4rem; color: var(--primary) !important; font-weight: 900; }
+
         .insert-btn {
-            border: 2px dashed rgba(255,255,255,0.4); padding: 15px; border-radius: 12px;
-            text-align: center; font-weight: bold; cursor: pointer; color: rgba(255,255,255,0.7);
+            border: 2px dashed rgba(255,255,255,0.6); padding: 15px; border-radius: 12px;
+            text-align: center; font-weight: bold; cursor: pointer; color: white; background: rgba(0,0,0,0.3);
         }
-        .insert-btn:hover { background: rgba(255,255,255,0.1); color: white; border-color: white; }
+        .insert-btn:hover { background: rgba(255,255,255,0.2); border-color: white; }
 
         /* Quiz Grid */
         .quiz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: auto; }
         .quiz-option {
-            background: rgba(255,255,255,0.15); padding: 20px 10px; border-radius: 16px;
-            text-align: center; cursor: pointer; font-weight: 600; min-height: 80px;
+            background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.3);
+            padding: 20px 10px; border-radius: 16px; font-size: 0.95rem; font-weight: 700;
+            text-align: center; cursor: pointer; min-height: 80px;
             display: flex; align-items: center; justify-content: center; line-height: 1.2;
-            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         /* Overlays */
         .overlay {
             position: absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.9); z-index: 100;
+            background: rgba(0,0,0,0.95); z-index: 100;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: opacity 0.3s;
         }
@@ -179,15 +186,13 @@
             border-top: 5px solid white; border-radius: 50%;
             animation: spin 1s linear infinite; margin-bottom: 20px;
         }
-
-        .blur-img { width: 250px; height: 250px; border-radius: 20px; filter: blur(30px); margin: 0 auto; object-fit: cover; }
+        .blur-img { width: 250px; height: 250px; border-radius: 20px; filter: blur(30px); margin: 0 auto; display: block; object-fit: cover; border: 2px solid white; }
         .anim-unblur { animation: unblur 20s linear forwards; }
         @keyframes unblur { to { filter: blur(0px); } }
 
-        /* Floating Score */
         .score-float {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 5rem; font-weight: 900; color: #2ecc71; text-shadow: 0 10px 30px black;
+            font-size: 5rem; font-weight: 900; color: #2ecc71 !important; text-shadow: 0 10px 30px black;
             animation: floatUp 1s forwards; pointer-events: none; z-index: 200;
         }
         @keyframes floatUp { to { transform: translate(-50%, -150%) scale(1.5); opacity: 0; } }
@@ -210,7 +215,7 @@
             <div class="hero">
                 <img src="https://e-cdns-images.dzcdn.net/images/playlist/372702759e693b7df044c32b57020022/500x500-000000-80-0-0.jpg">
                 <h2>Die geile Mische</h2>
-                <p style="opacity:0.7; margin-bottom:20px;">Die ultimative Party-Collection</p>
+                <p style="opacity:0.9; margin-bottom:20px;">Die ultimative Party-Collection</p>
                 <button class="btn btn-primary btn-large" onclick="selectPlaylist('14834933783', 'Die geile Mische')">
                     <i class="fas fa-play"></i> JETZT SPIELEN
                 </button>
@@ -227,7 +232,7 @@
                     <img src="https://e-cdns-images.dzcdn.net/images/playlist/73252538cb1235b2210a693c061d4b68/250x250-000000-80-0-0.jpg" class="playlist-img">
                     <div>
                         <div style="font-weight:bold; font-size:1.1rem;">Best of 80s</div>
-                        <div style="opacity:0.7;">Klassiker</div>
+                        <div style="opacity:0.8;">Klassiker</div>
                     </div>
                 </div>
             </div>
@@ -237,27 +242,27 @@
 
     <div id="screen-modes" class="screen">
         <div class="scroll-y">
-            <h2 id="selected-playlist-name" style="color:var(--primary); margin-bottom:5px;">Playlist</h2>
+            <h2 id="selected-playlist-name" style="color:#5edfff !important; margin-bottom:5px;">Playlist</h2>
             <p style="margin-bottom:30px;">Wähle deinen Spielmodus:</p>
 
             <div class="grid-modes">
                 <div class="mode-card" onclick="setupGame('timeline')" style="border-color:#3498db">
-                    <i class="fas fa-stream" style="color:#3498db"></i><h4>Timeline</h4><p>Ordne die Jahre</p>
+                    <i class="fas fa-stream" style="color:#3498db !important"></i><h4>Timeline</h4><p>Ordne die Jahre</p>
                 </div>
                 <div class="mode-card" onclick="setupGame('quiz')" style="border-color:#f1c40f">
-                    <i class="fas fa-bolt" style="color:#f1c40f"></i><h4>Quiz</h4><p>Highscore Jagd</p>
+                    <i class="fas fa-bolt" style="color:#f1c40f !important"></i><h4>Quiz</h4><p>Highscore Jagd</p>
                 </div>
                 <div class="mode-card" onclick="setupGame('hl')" style="border-color:#e67e22">
-                    <i class="fas fa-arrows-alt-v" style="color:#e67e22"></i><h4>High/Low</h4><p>Älter oder Neuer?</p>
+                    <i class="fas fa-arrows-alt-v" style="color:#e67e22 !important"></i><h4>High/Low</h4><p>Älter oder Neuer?</p>
                 </div>
                 <div class="mode-card" onclick="setupGame('onesec')" style="border-color:#e74c3c">
-                    <i class="fas fa-stopwatch" style="color:#e74c3c"></i><h4>1 Sekunde</h4><p>Erkennst du es?</p>
+                    <i class="fas fa-stopwatch" style="color:#e74c3c !important"></i><h4>1 Sekunde</h4><p>Erkennst du es?</p>
                 </div>
                 <div class="mode-card" onclick="setupGame('blur')" style="border-color:#9b59b6">
-                    <i class="fas fa-image" style="color:#9b59b6"></i><h4>Blur</h4><p>Bilderrätsel</p>
+                    <i class="fas fa-image" style="color:#9b59b6 !important"></i><h4>Blur</h4><p>Bilderrätsel</p>
                 </div>
                 <div class="mode-card" onclick="setupGame('duel')" style="border-color:#2ecc71">
-                    <i class="fas fa-user-friends" style="color:#2ecc71"></i><h4>Duell</h4><p>1 vs 1 Lokal</p>
+                    <i class="fas fa-user-friends" style="color:#2ecc71 !important"></i><h4>Duell</h4><p>1 vs 1 Lokal</p>
                 </div>
             </div>
 
@@ -268,8 +273,8 @@
     </div>
 
     <div id="screen-game" class="screen">
-        <div style="padding:10px 20px;">
-            <button class="btn btn-large btn-back" style="margin:0; font-size:0.9rem; padding:10px;" onclick="exitGame()">
+        <div style="padding:10px 20px; flex-shrink:0;">
+            <button class="btn btn-large btn-back" style="margin:0; font-size:0.9rem; padding:12px;" onclick="exitGame()">
                 <i class="fas fa-times"></i> Spiel beenden
             </button>
         </div>
@@ -284,7 +289,7 @@
 
     <div id="overlay-end" class="overlay">
         <h1 id="end-title" style="font-size:3rem; margin-bottom:10px;">Game Over</h1>
-        <p id="end-msg" style="font-size:1.3rem; opacity:0.8; margin-bottom:30px;">Score: 0</p>
+        <p id="end-msg" style="font-size:1.3rem; opacity:0.9; margin-bottom:30px;">Score: 0</p>
         <div style="display:flex; gap:15px;">
             <button class="btn btn-secondary" onclick="exitGame()">Menü</button>
             <button class="btn btn-primary" onclick="restartGame()">Nochmal</button>
@@ -292,11 +297,10 @@
     </div>
 
     <audio id="audio-player"></audio>
-
 </div>
 
 <script>
-    /* ================= SYSTEM ================= */
+    /* ================= SYSTEM CORE ================= */
     const state = {
         playlistId: null, tracks: [], pool: [], currentTrack: null, nextTrack: null, isPlaying: false,
         mode: null, score: 0, lives: 3, startTime: 0,
@@ -311,7 +315,7 @@
         body: document.body
     };
 
-    // --- DEEZER API HELPER ---
+    /* --- DEEZER API --- */
     function fetchDeezer(url) {
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
@@ -323,7 +327,7 @@
         });
     }
 
-    // --- ISRC FIX ---
+    /* --- YEAR FIX --- */
     function getYearFromISRC(isrc) {
         if (!isrc || isrc.length < 7) return null;
         const yy = parseInt(isrc.substring(5, 7));
@@ -344,13 +348,11 @@
                 ...track, year,
                 cover: track.album.cover_xl,
                 cover_med: track.album.cover_medium,
-                // WICHTIG: Saubere Titel/Artist für Quiz erstellen, damit keine Duplikate entstehen
                 title_clean: track.title.replace(/\(.*\)/g, "").trim(),
                 artist_clean: track.artist.name
             };
         } catch(e) { return null; }
     }
-
     async function getValidSong() {
         while(state.pool.length > 0) {
             const raw = state.pool.pop();
@@ -360,7 +362,7 @@
         return null;
     }
 
-    // --- NAVIGATION ---
+    /* --- NAVIGATION --- */
     function navigate(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
@@ -368,17 +370,17 @@
     function goHome() { navigate('screen-home'); audioCtrl(false); }
     function loader(show) { document.getElementById('overlay-load').className = show ? 'overlay visible' : 'overlay'; }
 
-    // --- PLAYLIST LOGIC ---
+    /* --- PLAYLIST --- */
     async function searchPlaylists() {
         const q = document.getElementById('search-input').value;
         if(!q) return;
-        els.results.innerHTML = '<p style="text-align:center; opacity:0.5; margin-top:20px;">Lade...</p>';
+        els.results.innerHTML = '<p style="text-align:center; opacity:0.8; margin-top:20px;">Suche...</p>';
         try {
             const d = await fetchDeezer(`https://api.deezer.com/search/playlist?q=${encodeURIComponent(q)}`);
             els.results.innerHTML = d.data.map(p =>
                 `<div class="playlist-card" onclick="selectPlaylist('${p.id}', '${p.title.replace(/'/g,"")}')">
                     <img src="${p.picture_medium}" class="playlist-img">
-                    <div><div style="font-weight:bold;">${p.title}</div><div style="font-size:0.8rem; opacity:0.7;">${p.nb_tracks} Songs</div></div>
+                    <div><div style="font-weight:bold;">${p.title}</div><div style="font-size:0.8rem; opacity:0.8;">${p.nb_tracks} Songs</div></div>
                 </div>`
             ).join('');
         } catch(e) { els.results.innerHTML = 'Fehler.'; }
@@ -397,33 +399,29 @@
         } catch(e) { loader(false); alert("Fehler: " + e.message); }
     }
 
-    // --- AUDIO & VISUALIZER ---
+    /* --- AUDIO & VISUALIZER --- */
     function audioCtrl(play, url=null) {
         if(play && url) {
             els.audio.src = url; els.audio.play().catch(e=>{});
             state.isPlaying=true;
-            els.body.classList.replace('idle', 'playing'); // Visualizer an
+            els.body.classList.replace('idle', 'playing');
         } else {
             els.audio.pause(); state.isPlaying=false;
-            els.body.classList.replace('playing', 'idle'); // Visualizer aus
+            els.body.classList.replace('playing', 'idle');
         }
-
         const v = document.querySelector('.vinyl');
         if(v) state.isPlaying ? v.classList.add('spinning') : v.classList.remove('spinning');
-
-        // Button Update
         const btn = document.getElementById('play-toggle-btn');
         if(btn) btn.innerHTML = state.isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
     }
 
-    // --- GAME ENGINE ---
+    /* --- GAME ENGINE --- */
     function setupGame(mode) {
         state.mode = mode; state.score = 0;
         state.lives = (mode === 'quiz' || mode === 'onesec') ? 1 : 3;
         state.duelP1 = 0; state.duelP2 = 0;
         updateStatus();
         navigate('screen-game');
-
         if(mode === 'timeline') initTimeline();
         else if(mode === 'quiz') initQuiz();
         else if(mode === 'hl') initHL();
@@ -440,10 +438,7 @@
     }
 
     /* --- MODE: TIMELINE --- */
-    async function initTimeline() {
-        state.timeline = []; state.targetScore = 10;
-        loader(true); const start = await getValidSong(); state.timeline.push(start); nextTimeline();
-    }
+    async function initTimeline() { state.timeline = []; state.targetScore = 10; loader(true); const start = await getValidSong(); state.timeline.push(start); nextTimeline(); }
     async function nextTimeline() {
         const song = await getValidSong();
         if(!song) return endGame(true, "Playlist leer!");
@@ -452,7 +447,7 @@
     }
     function renderTimelineUI() {
         let html = `
-            <div style="text-align:center;">
+            <div style="text-align:center; margin-bottom:20px;">
                 <div class="vinyl-wrap" style="margin:0 auto 20px auto;">
                     <div class="vinyl"><div class="vinyl-label" style="background-image:url(${state.currentTrack.cover_med})"></div></div>
                 </div>
@@ -463,7 +458,7 @@
         html += `<div class="insert-btn" onclick="checkTimeline(0)">Hier (Älter als ${state.timeline[0].year})</div>`;
         state.timeline.forEach((s, i) => {
             html += `<div class="tl-item"><div class="tl-year">${s.year}</div>
-                    <div style="flex:1;"><div>${s.title_clean}</div><div style="font-size:0.8rem; opacity:0.7;">${s.artist.name}</div></div></div>`;
+                    <div style="flex:1;"><div>${s.title_clean}</div><div style="font-size:0.8rem; opacity:0.8;">${s.artist.name}</div></div></div>`;
             if(i < state.timeline.length) html += `<div class="insert-btn" onclick="checkTimeline(${i+1})">Hier einfügen</div>`;
         });
         html += `</div>`;
@@ -484,34 +479,25 @@
         }
     }
 
-    /* --- MODE: QUIZ (UNDEFINED FIX + DUPLICATE FIX) --- */
+    /* --- MODE: QUIZ (FIXED) --- */
     async function initQuiz() { nextQuiz(); }
     async function nextQuiz() {
         loader(true);
         const target = await getValidSong();
         if(!target) return endGame(true, `Score: ${state.score}`);
 
-        // Decoy Logic mit Clean Data
         const decoys = [];
         let safety = 0;
-        while(decoys.length < 3 && safety < 100) {
+        while(decoys.length < 3 && safety < 50) {
             safety++;
             const raw = state.pool[Math.floor(Math.random() * state.pool.length)];
-            // Wir brauchen hier keine API Calls für Decoys, nur die Namen aus den Rohdaten
-            // ABER wir müssen sicherstellen, dass sie existieren
             const title = raw.title.replace(/\(.*\)/g, "").trim();
             const exists = title === target.title_clean || decoys.some(d => d.title_clean === title);
-
-            if(raw.id !== target.id && !exists) {
-                decoys.push({ id: raw.id, title_clean: title });
-            }
+            if(raw.id !== target.id && !exists) decoys.push({ id: raw.id, title_clean: title });
         }
 
-        // Target auch in das Format bringen
-        const targetOption = { id: target.id, title_clean: target.title_clean };
-        const options = [targetOption, ...decoys].sort(()=>0.5-Math.random());
-
         state.currentTrack = target;
+        const options = [{id:target.id, title_clean:target.title_clean}, ...decoys].sort(()=>0.5-Math.random());
         loader(false);
 
         els.gameCon.innerHTML = `
@@ -528,12 +514,14 @@
     }
     function checkQuiz(el, correct) {
         audioCtrl(false);
+        document.querySelector('.vinyl-label').style.backgroundImage = `url(${state.currentTrack.cover})`;
         if(correct) {
             const pts = Math.max(100, 1000 - Math.floor((Date.now()-state.startTime)/30));
             state.score += pts; updateStatus(); el.classList.add('correct'); showFloatingScore(pts);
             setTimeout(nextQuiz, 1000);
         } else {
-            el.classList.add('wrong'); setTimeout(() => endGame(false, `Final Score: ${state.score}`), 1000);
+            el.classList.add('wrong');
+            setTimeout(() => endGame(false, `Final Score: ${state.score}`), 1000);
         }
     }
 
@@ -570,8 +558,6 @@
     async function initOneSec() { updateStatus(); nextOneSec(); }
     async function nextOneSec() {
         loader(true); const target = await getValidSong(); if(!target) return endGame(true, `Score: ${state.score}`);
-
-        // Decoys
         const decoys = []; let s=0;
         while(decoys.length < 3 && s < 50) {
             s++; const raw = state.pool[Math.floor(Math.random()*state.pool.length)];
@@ -579,10 +565,8 @@
             if(raw.id !== target.id && !decoys.some(d=>d.title_clean === title) && title !== target.title_clean)
                 decoys.push({id:raw.id, title_clean:title});
         }
-
         state.currentTrack = target; state.secLevel = 1;
         const opts = [{id:target.id, title_clean:target.title_clean}, ...decoys].sort(()=>0.5-Math.random());
-
         loader(false);
         els.gameCon.innerHTML = `
             <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;">
@@ -596,8 +580,9 @@
         playSnippet(1000);
     }
     function playSnippet(ms) {
-        audioCtrl(false); els.audio.src = state.currentTrack.preview; els.audio.currentTime = 0; els.audio.play();
-        document.querySelector('.vinyl').classList.add('spinning'); setTimeout(()=>audioCtrl(false), ms);
+        audioCtrl(false); els.audio.src = state.currentTrack.preview; els.audio.currentTime = 0;
+        els.audio.play(); document.querySelector('.vinyl').classList.add('spinning');
+        setTimeout(() => audioCtrl(false), ms);
     }
     function checkOneSec(el, correct) {
         document.querySelector('.vinyl-label').style.backgroundImage = `url(${state.currentTrack.cover})`;
@@ -611,7 +596,6 @@
     async function initBlur() { nextBlur(); }
     async function nextBlur() {
         loader(true); const target = await getValidSong();
-        // Artist Decoys
         const decoys = []; let s=0;
         while(decoys.length < 3 && s < 50) {
             s++; const raw = state.pool[Math.floor(Math.random()*state.pool.length)];
@@ -646,7 +630,7 @@
                 <div style="margin-top:30px; text-align:left;">
                     <p>Spieler 1:</p><input type="number" id="p1-in" placeholder="Jahr">
                     <p style="margin-top:15px;">Spieler 2:</p><input type="number" id="p2-in" placeholder="Jahr">
-                    <button class="btn btn-success" style="width:100%; margin-top:30px;" onclick="resolveDuel()">Auflösen</button>
+                    <button class="btn btn-success" style="width:100%; margin-top:20px;" onclick="resolveDuel()">Auflösen</button>
                 </div>
             </div>`;
     }
